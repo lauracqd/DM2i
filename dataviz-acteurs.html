@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dataviz 2 — Qui contrôle la musique ?</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-deep:  #254396;
+    --blue-mid:   #3B5AA5;
+    --blue-light: #3F73EB;
+    --cream:      #F8F8F8;
+    --rose:       #965A74;
+    --charcoal:   #2B2F32;
+    --border:     rgba(37,67,150,.12);
+    --card:       #fff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body  *{margin:0;padding:0;box-sizing:border-box;}
+  .main{ background:var(--cream); color:var(--charcoal); font-family:'Noto Serif',serif; padding:48px 52px 64px; min-height:100vh; }
+/* ─── NAVBAR ─── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--blue, #254396);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+  height: 54px;
+  border-bottom: 2px solid var(--blue-mid, #3B5AA5);
+}
+
+/* LOGO */
+.nav-logo {
+  display: flex;
+  align-items: center;
+}
+.nav-logo img {
+  height: 28px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+/* LINKS */
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: #fff;
+}
+
+/* HAMBURGER */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 22px;
+  height: 2px;
+  background: #fff;
+  display: block;
+}
+@media (max-width: 768px) {
+
+  .nav-links {
+    position: absolute;
+    top: 54px;
+    left: 0;
+    width: 100%;
+    background: var(--blue, #254396);
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 1.5rem 2rem;
+    display: none;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--dark, #2B2F32);
+  color: rgba(255,255,255,0.7);
+  padding: 3.5rem 2.5rem 2rem;
+  margin-top: 4rem;
+}
+
+/* MAIN GRID */
+.footer-main {
+  max-width: 1100px;
+  margin: 0 auto 2rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 2.5rem;
+}
+
+/* BRAND BLOCK */
+.footer-brand {
+  max-width: 420px;
+}
+
+.footer-logo img {
+  height: 36px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  margin-bottom: 1rem;
+}
+
+.footer-tagline {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+  color: rgba(255,255,255,0.6);
+}
+
+/* CONTACT */
+.footer-contact {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.footer-contact:hover {
+  border-color: #fff;
+}
+
+/* COLUMNS */
+.footer-col h4 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.footer-col ul {
+  list-style: none;
+}
+
+.footer-col li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-col a {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-col a:hover {
+  color: #fff;
+}
+
+/* ─── BOTTOM BAR ─── */
+.footer-bottom {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* COPYRIGHT */
+.footer-copy {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+}
+
+/* CREDITS */
+.footer-credits {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.footer-credits a {
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+}
+
+.footer-credits a:hover {
+  color: #fff;
+}
+
+.footer-credits-label {
+  opacity: 0.6;
+}
+
+.footer-credits-sep {
+  opacity: 0.3;
+}
+
+.footer-credits-dot {
+  opacity: 0.3;
+}
+
+/* BACK TO TOP */
+.back-to-top {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.6);
+
+  padding: 0.4rem 0.8rem;
+  border-radius: 2px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  transition: all 0.2s ease;
+}
+
+.back-to-top:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+.back-to-top .arr {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+  /* HEADER */
+  .header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;gap:24px;}
+  .eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--rose);margin-bottom:10px;}
+  h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(40px,5.5vw,68px);font-weight:900;line-height:.9;letter-spacing:1px;color:var(--charcoal);text-transform:uppercase;margin-bottom:12px;}
+  h1 em{color:var(--rose);font-style:normal;}
+  .divider{width:56px;height:4px;background:linear-gradient(90deg,var(--rose),var(--blue-light));margin:0 0 16px;}
+  .subtitle{font-size:13.5px;color:#555;max-width:600px;line-height:1.75;}
+  .header-badge{background:var(--rose);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:8px 18px;border-radius:4px;white-space:nowrap;flex-shrink:0;align-self:flex-start;margin-top:6px;}
+
+  /* INTRO BOX */
+  .intro-box{background:var(--card);border-left:4px solid var(--rose);border-radius:0 10px 10px 0;padding:18px 22px;margin-bottom:24px;font-size:13.5px;color:#555;line-height:1.75;box-shadow:0 2px 12px rgba(37,67,150,.04);}
+  .intro-box strong{color:var(--charcoal);}
+
+  /* SECTION HEADER */
+  .section-hd{margin:28px 0 8px;}
+  .section-num{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#bbb;margin-bottom:4px;}
+  .section-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--charcoal);text-transform:uppercase;margin-bottom:6px;}
+  .section-explain{font-size:13px;color:#666;line-height:1.7;max-width:780px;margin-bottom:14px;}
+
+  /* PANEL */
+  .panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:26px 28px;position:relative;box-shadow:0 2px 20px rgba(37,67,150,.05);}
+  .panel::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:12px 12px 0 0;}
+  .panel.p-blue::before{background:linear-gradient(90deg,var(--blue-light),transparent);}
+  .panel.p-rose::before{background:linear-gradient(90deg,var(--rose),transparent);}
+  .panel.p-deep::before{background:linear-gradient(90deg,var(--blue-deep),transparent);}
+  .panel.p-mid::before{background:linear-gradient(90deg,var(--blue-mid),transparent);}
+  .panel-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#bbb;margin-bottom:6px;}
+  .panel-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;text-transform:uppercase;margin-bottom:10px;}
+  .panel.p-blue .panel-title{color:var(--blue-light);}
+  .panel.p-rose .panel-title{color:var(--rose);}
+  .panel.p-deep .panel-title{color:var(--blue-deep);}
+  .panel.p-mid  .panel-title{color:var(--blue-mid);}
+  .panel-explain{font-size:12px;color:#888;line-height:1.65;margin-bottom:14px;background:rgba(37,67,150,.03);border-radius:6px;padding:8px 12px;border:1px solid rgba(37,67,150,.07);}
+
+  /* GRIDS */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+
+  /* STREAMING CARDS */
+  .stream-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .stream-card{background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:14px;transition:border-color .2s,transform .2s;cursor:default;}
+  .stream-card:hover{border-color:rgba(150,90,116,.4);transform:translateY(-2px);}
+  .stream-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:.5px;margin-bottom:2px;}
+  .stream-val{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;line-height:1;margin-bottom:4px;}
+  .stream-year{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;color:#bbb;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+  .stream-types{display:flex;gap:4px;flex-wrap:wrap;}
+  .stream-tag{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:2px 6px;border-radius:3px;background:rgba(37,67,150,.07);color:#888;}
+
+  /* GEO BARS */
+  .geo{margin-bottom:11px;}
+  .geo-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;}
+  .geo-name{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--charcoal);}
+  .geo-n{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;}
+  .geo-track{height:5px;background:rgba(37,67,150,.07);border-radius:4px;overflow:hidden;}
+  .geo-fill{height:100%;border-radius:4px;transition:width 1.2s cubic-bezier(.16,1,.3,1);}
+
+  /* MAJOR CARDS */
+  .major-card{background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:14px;transition:border-color .2s;}
+  .major-card:hover{border-color:rgba(150,90,116,.35);}
+  .major-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--rose);margin-bottom:2px;}
+  .major-ceo{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;color:#bbb;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+  .major-year{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:var(--charcoal);line-height:1;margin-bottom:2px;}
+  .major-geo{font-size:11px;color:#888;}
+
+  /* INFRA CARDS */
+  .infra-card{background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:14px;transition:border-color .2s;}
+  .infra-card:hover{border-color:rgba(63,115,235,.4);}
+  .infra-name{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:var(--blue-light);margin-bottom:2px;}
+  .infra-year{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;color:#bbb;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+  .infra-geo{font-size:11px;color:#888;line-height:1.4;}
+
+  /* DISTR TABLE */
+  .distr-table{width:100%;border-collapse:collapse;}
+  .distr-table th{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#bbb;padding:0 0 8px;text-align:left;border-bottom:1px solid var(--border);}
+  .distr-table td{font-size:12px;color:var(--charcoal);padding:8px 0;border-bottom:1px solid rgba(37,67,150,.05);}
+  .distr-table td:first-child{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--blue-deep);}
+  .distr-table td:last-child{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:#bbb;}
+
+  /* CONCENTRATION BARS */
+  .conc-bar{margin-bottom:16px;}
+  .conc-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px;}
+  .conc-label{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--charcoal);}
+  .conc-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;}
+  .conc-sub{font-family:'Noto Serif',serif;font-size:11px;color:#aaa;margin-bottom:5px;font-style:italic;}
+  .conc-track{height:5px;background:rgba(37,67,150,.07);border-radius:4px;overflow:hidden;}
+  .conc-fill{height:100%;border-radius:4px;transition:width 1.2s cubic-bezier(.16,1,.3,1);}
+
+  /* SOURCE BLOCK */
+  .source-block{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-top:14px;display:flex;align-items:flex-start;gap:12px;}
+  .source-icon{font-size:15px;flex-shrink:0;margin-top:1px;}
+  .source-text{font-size:11.5px;color:#888;line-height:1.65;font-style:italic;}
+  .source-text strong{font-style:normal;color:#666;font-weight:700;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;font-size:12px;}
+
+  /* INNER SEP */
+  .inner-sep{height:1px;background:var(--border);margin:14px 0;}
+  .inner-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#bbb;margin-bottom:10px;}
+
+  /* TOOLTIP */
+  .tooltip{position:fixed;background:var(--charcoal);border-radius:8px;padding:12px 16px;pointer-events:none;z-index:200;opacity:0;transition:opacity .15s;min-width:180px;box-shadow:0 8px 32px rgba(0,0,0,.2);}
+  .tt-title{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:#fff;margin-bottom:6px;}
+  .tt-text{font-size:12px;color:#bbb;line-height:1.5;}
+
+  /* SYNTH BOX */
+  .synth-box{background:rgba(150,90,116,.06);border:1px solid rgba(150,90,116,.2);border-radius:8px;padding:14px 16px;margin-top:14px;font-size:12.5px;color:#666;line-height:1.7;}
+  .synth-box strong{color:var(--charcoal);}
+ 
+  :root {
+  --blue-deep:#254396;
+  --blue-mid:#3B5AA5;
+  --blue-light:#3F73EB;
+  --rose:#965A74;
+  --dark:#2B2F32;
+  --cream:#F8F8F8;
+  --text:#404040;
+  }
+
+  body {
+  margin:0;
+  font-family:'Noto Serif',serif;
+  background:var(--cream);
+  color:var(--text);
+  }
+
+  /* NAV */
+  .main-nav {
+  position:sticky;
+  top:0;
+  background:var(--blue-deep);
+  z-index:1000;
+  }
+  .nav-inner {
+  max-width:1200px;
+  margin:auto;
+  padding:0 20px;
+  height:56px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  }
+  .nav-links {
+  display:flex;
+  gap:24px;
+  list-style:none;
+  }
+  .nav-links a {
+  font-family:'Barlow Condensed';
+  font-size:12px;
+  letter-spacing:.1em;
+  color:rgba(255,255,255,.6);
+  text-transform:uppercase;
+  }
+  .nav-links a:hover {color:#fff;}
+
+  .nav-burger {display:none;color:white;cursor:pointer;}
+
+  @media(max-width:768px){
+  .nav-links{
+  display:none;
+  flex-direction:column;
+  position:absolute;
+  top:56px;left:0;width:100%;
+  background:var(--blue-deep);
+  padding:20px;
+  }
+  .nav-links.open{display:flex;}
+  .nav-burger{display:block;}
+  }
+
+  /* PAGE */
+  .page {
+  max-width:1100px;
+  margin:auto;
+  padding:60px 20px 80px;
+  }
+
+  /* FOOTER */
+  .main-footer {
+  background:var(--dark);
+  color:rgba(255,255,255,.6);
+  padding:40px 20px;
+  }
+  .footer-inner{max-width:1100px;margin:auto;}
+  .footer-title{color:white;font-family:'Barlow Condensed';font-weight:800;margin-bottom:10px;}
+  .footer-links{display:flex;gap:20px;margin-bottom:10px;}
+  .footer-links a:hover{color:white;}
+
+</style>
+
+</head>
+<body>
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo"><img src="img/logo-dm2i.svg" alt="DM2i"/></a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="cartographie.html">Cartographie</a></li>
+    <li><a href="dataviz-acteurs.html">Acteurs</a></li>
+    <li><a href="dataviz-cibles-valeurs.html">Cibles</a></li>
+    <li><a href="dataviz-financeurs.html">Financeurs</a></li>
+    <li><a href="dataviz-outils.html">Outils</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="main">
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="eyebrow">DM2i · Programme de recherche · Visualisation 2 sur 4</div>
+      <h1>QUI CONTRÔLE<br><em>LA MUSIQUE</em><br>À L'ÈRE DE L'IA ?</h1>
+      <div class="divider"></div>
+      <p class="subtitle">Cartographie des acteurs qui structurent l'industrie musicale à l'ère de l'IA : plateformes de streaming, distributeurs numériques, majors et fournisseurs d'infrastructure cloud — corpus DM2i, 2025.</p>
+    </div>
+    <div class="header-badge">4 groupes d'acteurs</div>
+  </div>
+
+  <!-- INTRO EXPLICATION -->
+  <div class="intro-box">
+    <strong>Comment lire cette visualisation ?</strong> L'industrie musicale est organisée en <strong>4 groupes d'acteurs</strong> : les plateformes d'écoute (streaming), les distributeurs (intermédiaires entre artistes et plateformes), les majors (grands labels historiques) et les fournisseurs d'infrastructure cloud (qui font tourner les algorithmes d'IA). Pour chaque groupe, on analyse leur poids et leur origine géographique. Le résultat révèle une concentration massive aux États-Unis.
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- GROUPE 1 · STREAMING -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="section-hd">
+    <div class="section-title">Les plateformes de streaming musical</div>
+    <div class="section-explain">Services d'écoute en ligne classés par <strong>valorisation financière</strong> — indicateur de leur poids dans l'industrie. Elles intègrent de plus en plus l'IA pour la recommandation et l'analyse des goûts.</div>
+  </div>
+
+  <div class="panel p-rose">
+    <div class="panel-label">9 plateformes · Classées par valorisation financière</div>
+    <div class="panel-title">Valorisation des plateformes de streaming</div>
+    <div class="stream-grid" id="stream-cards"></div>
+  </div>
+
+  <div class="source-block">
+    <span class="source-icon">📁</span>
+    <div class="source-text">
+      <strong>Source :</strong> data_streams.json, corpus DM2i — IUT Bordeaux Montaigne, 2025 (9 plateformes). Champs : <em>metadata.val</em> (valorisation estimée), <em>metadata.creation</em>, <em>metadata.typeService</em>. Valorisations issues de Statista, Bloomberg et rapports annuels — estimations susceptibles de varier.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- GROUPE 2 · DISTRIBUTION -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="section-hd">
+    <div class="section-title">Distributeurs numériques & majors</div>
+    <div class="section-explain">Les <strong>distributeurs</strong> sont les intermédiaires entre artistes et plateformes (DistroKid, TuneCore…). Les <strong>majors</strong> (Sony, Universal, Warner…) signent les artistes et contrôlent de vastes catalogues de droits musicaux, au cœur des débats juridiques sur l'IA.</div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel p-blue">
+      <div class="panel-label">24 distributeurs numériques</div>
+      <div class="panel-title">Origine géographique des distributeurs</div>
+      <div id="distr-geo"></div>
+      <div class="inner-sep"></div>
+      <div class="inner-label">Époque de création</div>
+      <div id="distr-eras"></div>
+      <div class="inner-sep"></div>
+      <div class="inner-label">Principaux distributeurs</div>
+      <table class="distr-table" id="distr-table"></table>
+    </div>
+
+    <div class="panel p-deep">
+      <div class="panel-label">5 majors historiques</div>
+      <div class="panel-title">Les majors de l'industrie musicale</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;" id="major-cards"></div>
+      <div class="inner-sep"></div>
+      <div class="inner-label">Concentration géographique — tous acteurs confondus</div>
+      <div id="global-geo"></div>
+    </div>
+  </div>
+
+  <div class="source-block">
+    <span class="source-icon">📁</span>
+    <div class="source-text">
+      <strong>Sources :</strong> data_distr.json (24 distributeurs) · data_majors.json (5 majors) — corpus DM2i, IUT Bordeaux Montaigne, 2025. Champs : <em>metadata.siege</em>, <em>metadata.creation</em>, <em>metadata.ceo</em>. Concentration géographique calculée par agrégation des 4 fichiers du corpus.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- GROUPE 4 · INFRA -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="section-hd">
+    <div class="section-title">Les fournisseurs d'infrastructure</div>
+    <div class="section-explain">Ces entreprises fournissent la puissance de calcul (serveurs, GPU) sur laquelle repose toute l'IA musicale. C'est un socle technologique souvent invisible, mais indispensable à des outils comme Suno, Udio ou LANDR.</div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel p-mid">
+      <div class="panel-label">7 entreprises · Infrastructure cloud et IA</div>
+      <div class="panel-title">Fournisseurs d'infrastructure pour l'IA musicale</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" id="infra-cards"></div>
+    </div>
+
+    <div class="panel p-rose">
+      <div class="panel-label">Synthèse · Concentration géographique par groupe</div>
+      <div class="panel-title">La domination américaine à chaque niveau</div>
+      <div id="layer-bars"></div>
+      <div class="synth-box">
+        Qu'on écoute, distribue, signe ou héberge de la musique, <strong>on passe par des entreprises majoritairement américaines</strong>, une concentration qui interroge l'autonomie des artistes indépendants et des industries culturelles européennes face à l'IA.
+      </div>
+    </div>
+  </div>
+
+  <div class="source-block">
+    <span class="source-icon">📁</span>
+    <div class="source-text">
+      <strong>Sources :</strong> data_infra.json, corpus DM2i — IUT Bordeaux Montaigne, 2025 (7 entreprises). Champs : <em>metadata.creation</em>, <em>metadata.siege</em>. Taux de concentration US calculés via le champ <em>metadata.siege</em> agrégé sur l'ensemble des 4 fichiers du corpus (data_streams, data_distr, data_majors, data_infra).
+    </div>
+  </div>
+
+  <div class="tooltip" id="tooltip"></div>
+
+</div>
+
+<footer>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <a href="index.html" class="footer-logo"><img src="img/logo-dm2i.svg" alt="DM2i"/></a>
+      <p class="footer-tagline">Un programme de recherche sur les données musicales, l'IA et les nouvelles formes d'indépendance dans la filière musicale française.</p>
+      <a href="mailto:contact@dm2i.fr" class="footer-contact">Nous contacter</a>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="index.html#about">Le projet</a></li>
+        <li><a href="index.html#explorer">Découvertes</a></li>
+        <li><a href="index.html#axes">Nos angles</a></li>
+        <li><a href="index.html#chaine">La filière</a></li>
+        <li><a href="index.html#partners">Partenaires</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Résultats</h4>
+      <ul>
+        <li><a href="cartographie.html">Cartographie interactive</a></li>
+        <li><a href="dataviz-outils.html">Outils &amp; création</a></li>
+        <li><a href="dataviz-acteurs.html">Pouvoir &amp; plateformes</a></li>
+        <li><a href="dataviz-cibles-valeurs.html">Usages &amp; publics</a></li>
+        <li><a href="dataviz-financeurs.html">Investissements</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 DM2i — Données Musicales, IA &amp; (In)dépendance</span>
+    <div class="footer-credits">
+      <span class="footer-credits-label">Site réalisé par</span>
+      <span class="footer-credits-sep">—</span>
+      <a href="https://www.linkedin.com/in/priscilla-natalia" target="_blank" rel="noopener">Priscilla Natalia</a>
+      <span class="footer-credits-dot">•</span>
+      <a href="https://www.linkedin.com/in/laura-cocq-duche" target="_blank" rel="noopener">Laura Cocq–Duché</a>
+      <span class="footer-credits-dot">•</span>
+      <a href="https://www.linkedin.com/in/marine-louis" target="_blank" rel="noopener">Marine Louis</a>
+      <span class="footer-credits-dot">•</span>
+      <a href="https://www.linkedin.com/in/fanta-kouyate" target="_blank" rel="noopener">Fanta Kouyaté</a>
+    </div>
+    <button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+      <span class="arr">↑</span> Haut de page
+    </button>
+  </div>
+</footer>
+<script>
+const tt=document.getElementById('tooltip');
+function showTip(e,title,text){tt.innerHTML=`<div class="tt-title">${title}</div><div class="tt-text">${text}</div>`;tt.style.opacity='1';moveTip(e);}
+function moveTip(e){tt.style.left=(e.clientX+16)+'px';tt.style.top=(e.clientY-10)+'px';}
+function hideTip(){tt.style.opacity='0';}
+const burger = document.getElementById('hamburger');
+const nav = document.getElementById('nav-links');
+
+burger.addEventListener('click', () => {
+  nav.classList.toggle('open');
+});
+// STREAMING
+const streams=[
+  {name:'Spotify',      val:'40 Md$',  year:2006,types:['Traitement','Distribution'],color:'#3F73EB'},
+  {name:'Apple Music',  val:'20 Md$',  year:2015,types:['Distribution'],             color:'#254396'},
+  {name:'YouTube Music',val:'10 Md$',  year:2018,types:['Traitement','Distribution'],color:'#3B5AA5'},
+  {name:'Amazon Music', val:'3,8 Md$', year:2007,types:['Distribution'],             color:'#6B8FD4'},
+  {name:'SoundCloud',   val:'800 M$',  year:2007,types:['Traitement','Distribution'],color:'#965A74'},
+  {name:'Deezer',       val:'700 M$',  year:2007,types:['Distribution'],             color:'#A06B85'},
+  {name:'Tidal',        val:'500 M$',  year:2014,types:['Distribution'],             color:'#7B4F65'},
+  {name:'Bandcamp',     val:'400 M$',  year:2008,types:['Distribution'],             color:'#3B5AA5'},
+  {name:'Qobuz',        val:'200 M$',  year:2007,types:['Distribution'],             color:'#6B8FD4'},
+];
+const sc=document.getElementById('stream-cards');
+streams.forEach(s=>{
+  sc.innerHTML+=`<div class="stream-card" onmouseenter="showTip(event,'${s.name}','Fondée en ${s.year}<br>Usage IA : ${s.types.join(', ')}')" onmousemove="moveTip(event)" onmouseleave="hideTip()">
+    <div class="stream-name" style="color:${s.color}">${s.name}</div>
+    <div class="stream-val" style="color:${s.color}">${s.val}</div>
+    <div class="stream-year">Fondée en ${s.year}</div>
+    <div class="stream-types">${s.types.map(t=>`<span class="stream-tag">${t}</span>`).join('')}</div>
+  </div>`;
+});
+
+// DISTRIBUTION GEO
+const distrGeo=[
+  {country:'🇺🇸 États-Unis', n:12,color:'#3F73EB'},
+  {country:'🇸🇪 Suède',      n:3, color:'#254396'},
+  {country:'🇬🇧 Royaume-Uni',n:3, color:'#3B5AA5'},
+  {country:'🇫🇷 France',     n:1, color:'#965A74'},
+  {country:'🇨🇦 Canada',     n:1, color:'#A06B85'},
+  {country:'🇩🇪 Allemagne',  n:1, color:'#6B8FD4'},
+  {country:'🇳🇱 Pays-Bas',   n:1, color:'#7B4F65'},
+  {country:'🇨🇭 Suisse',     n:1, color:'#bbb'},
+  {country:'🇳🇬 Nigeria',    n:1, color:'#bbb'},
+];
+const dgEl=document.getElementById('distr-geo');
+distrGeo.forEach(d=>{
+  const w=((d.n/12)*100).toFixed(0);
+  dgEl.innerHTML+=`<div class="geo"><div class="geo-hd"><span class="geo-name">${d.country}</span><span class="geo-n" style="color:${d.color}">${d.n}</span></div><div class="geo-track"><div class="geo-fill" style="width:0%;background:${d.color}" data-w="${w}%"></div></div></div>`;
+});
+
+// DISTRIBUTION ERAS
+const eras=[
+  {label:'Avant 2010', n:14,color:'#3F73EB'},
+  {label:'2010–2014',  n:5, color:'#3B5AA5'},
+  {label:'2015–2019',  n:4, color:'#965A74'},
+  {label:'2020+',      n:1, color:'#6B8FD4'},
+];
+const eraEl=document.getElementById('distr-eras');
+eras.forEach(e=>{
+  const w=((e.n/14)*100).toFixed(0);
+  eraEl.innerHTML+=`<div class="geo"><div class="geo-hd"><span class="geo-name">${e.label}</span><span class="geo-n" style="color:${e.color}">${e.n} distributeurs</span></div><div class="geo-track"><div class="geo-fill" style="width:0%;background:${e.color}" data-w="${w}%"></div></div></div>`;
+});
+
+// DISTR TABLE
+const distrTop=[
+  ['Spotify / Repost Network','Los Angeles','2015'],
+  ['TuneCore — Believe',      'Brooklyn',  '2006'],
+  ['DistroKid',               'New York',  '2013'],
+  ['LANDR',                   'Montréal',  '2012'],
+  ['Believe Digital',         'Paris',     '2005'],
+  ['CD Baby',                 'Portland',  '1998'],
+];
+document.getElementById('distr-table').innerHTML=
+  `<tr><th>Distributeur</th><th>Ville</th><th>Fondé</th></tr>`+
+  distrTop.map(r=>`<tr><td>${r[0]}</td><td style="color:#888">${r[1]}</td><td>${r[2]}</td></tr>`).join('');
+
+// MAJORS
+const majors=[
+  {name:'Sony Music',      year:'1929',ceo:'Rob Stringer',  siege:'New York, USA',   color:'#3F73EB'},
+  {name:'Universal Music', year:'1934',ceo:'Lucian Grainge',siege:'Hilversum, NL',   color:'#254396'},
+  {name:'Warner Music',    year:'1958',ceo:'Robert Kyncl',  siege:'New York, USA',   color:'#3B5AA5'},
+  {name:'BMG Rights',      year:'2008',ceo:'T. Coesfeld',   siege:'Berlin, DE',      color:'#965A74'},
+  {name:'Warner Chappell', year:'1987',ceo:'Guy Moot',      siege:'Los Angeles, USA',color:'#A06B85'},
+];
+const mcEl=document.getElementById('major-cards');
+majors.forEach(m=>{
+  mcEl.innerHTML+=`<div class="major-card" onmouseenter="showTip(event,'${m.name}','Directeur : ${m.ceo}<br>Siège : ${m.siege}')" onmousemove="moveTip(event)" onmouseleave="hideTip()">
+    <div class="major-name" style="color:${m.color}">${m.name}</div>
+    <div class="major-ceo">Dir. · ${m.ceo}</div>
+    <div class="major-year">Fondé en ${m.year}</div>
+    <div class="major-geo">${m.siege}</div>
+  </div>`;
+});
+
+// GLOBAL GEO
+const globalGeo=[
+  {country:'🇺🇸 États-Unis', n:32,color:'#3F73EB'},
+  {country:'🇸🇪 Suède',      n:4, color:'#254396'},
+  {country:'🇬🇧 Royaume-Uni',n:3, color:'#3B5AA5'},
+  {country:'🇩🇪 Allemagne',  n:3, color:'#965A74'},
+  {country:'🇫🇷 France',     n:2, color:'#A06B85'},
+  {country:'Autres',          n:1, color:'#bbb'},
+];
+const ggEl=document.getElementById('global-geo');
+globalGeo.forEach(d=>{
+  const w=((d.n/32)*100).toFixed(0);
+  ggEl.innerHTML+=`<div class="geo"><div class="geo-hd"><span class="geo-name">${d.country}</span><span class="geo-n" style="color:${d.color}">${d.n} entreprises</span></div><div class="geo-track"><div class="geo-fill" style="width:0%;background:${d.color}" data-w="${w}%"></div></div></div>`;
+});
+
+// INFRA
+const infra=[
+  {name:'AWS',          year:'2006',siege:'Seattle, USA',   desc:'Hébergement cloud · serveurs pour l\'IA'},
+  {name:'Google Cloud', year:'2008',siege:'Mountain View',  desc:'IA Vertex, modèles Gemini'},
+  {name:'Azure',        year:'2008',siege:'Redmond, USA',   desc:'Partenariat OpenAI · GPT'},
+  {name:'Microsoft',    year:'1975',siege:'Redmond, USA',   desc:'Copilot, GPT-4, Bing'},
+  {name:'NVIDIA',       year:'1993',siege:'Santa Clara',    desc:'GPU A100/H100 · calcul IA'},
+  {name:'OpenAI',       year:'2015',siege:'San Francisco',  desc:'GPT-4, Sora, Whisper'},
+  {name:'Oracle',       year:'1977',siege:'Austin, USA',    desc:'Cloud OCI, bases de données'},
+];
+const icEl=document.getElementById('infra-cards');
+infra.forEach(n=>{
+  icEl.innerHTML+=`<div class="infra-card" onmouseenter="showTip(event,'${n.name}','Fondée en ${n.year}<br>${n.siege}')" onmousemove="moveTip(event)" onmouseleave="hideTip()">
+    <div class="infra-name">${n.name}</div>
+    <div class="infra-year">Fondée en ${n.year}</div>
+    <div class="infra-geo">${n.desc}<br><span style="color:#bbb">${n.siege}</span></div>
+  </div>`;
+});
+
+// CONCENTRATION
+const layers=[
+  {label:'Infrastructure cloud',  pct:100, sub:'7 entreprises sur 7 sont américaines', color:'#3F73EB'},
+  {label:'Streaming',             pct:67,  sub:'6 plateformes sur 9 sont américaines', color:'#254396'},
+  {label:'Grands labels (majors)',pct:60,  sub:'3 majors sur 5 sont américains',       color:'#3B5AA5'},
+  {label:'Distribution',          pct:50,  sub:'12 distributeurs sur 24 sont américains',color:'#965A74'},
+];
+const lbEl=document.getElementById('layer-bars');
+layers.forEach(l=>{
+  lbEl.innerHTML+=`<div class="conc-bar">
+    <div class="conc-hd"><span class="conc-label">${l.label}</span><span class="conc-val" style="color:${l.color}">${l.pct}%</span></div>
+    <div class="conc-sub">${l.sub}</div>
+    <div class="conc-track"><div class="conc-fill" style="width:0%;background:${l.color}" data-w="${l.pct}%"></div></div>
+  </div>`;
+});
+
+setTimeout(()=>document.querySelectorAll('.geo-fill,.conc-fill').forEach(el=>el.style.width=el.getAttribute('data-w')),200);
+</script>
+</body>
+</html>

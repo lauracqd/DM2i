@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dataviz 3 — À qui s'adressent les outils IA ?</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-deep:  #254396;
+    --blue-mid:   #3B5AA5;
+    --blue-light: #3F73EB;
+    --cream:      #F8F8F8;
+    --rose:       #965A74;
+    --charcoal:   #2B2F32;
+    --border:     rgba(37,67,150,.12);
+    --card:       #fff;
+  }
+ *{margin:0;padding:0;box-sizing:border-box;}
+  body  *{margin:0;padding:0;box-sizing:border-box;}
+  .main{ background:var(--cream); color:var(--charcoal); font-family:'Noto Serif',serif; padding:48px 52px 64px; min-height:100vh; }
+/* ─── NAVBAR ─── */
+/* ─── FOOTER ─── */
+footer {
+  background: var(--dark, #2B2F32);
+  color: rgba(255,255,255,0.7);
+  padding: 3.5rem 2.5rem 2rem;
+  margin-top: 4rem;
+}
+
+/* MAIN GRID */
+.footer-main {
+  max-width: 1100px;
+  margin: 0 auto 2rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 2.5rem;
+}
+
+/* BRAND BLOCK */
+.footer-brand {
+  max-width: 420px;
+}
+
+.footer-logo img {
+  height: 36px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  margin-bottom: 1rem;
+}
+
+.footer-tagline {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+  color: rgba(255,255,255,0.6);
+}
+
+/* CONTACT */
+.footer-contact {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.footer-contact:hover {
+  border-color: #fff;
+}
+
+/* COLUMNS */
+.footer-col h4 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.footer-col ul {
+  list-style: none;
+}
+
+.footer-col li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-col a {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-col a:hover {
+  color: #fff;
+}
+
+/* ─── BOTTOM BAR ─── */
+.footer-bottom {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* COPYRIGHT */
+.footer-copy {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+}
+
+/* CREDITS */
+.footer-credits {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.footer-credits a {
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+}
+
+.footer-credits a:hover {
+  color: #fff;
+}
+
+.footer-credits-label {
+  opacity: 0.6;
+}
+
+.footer-credits-sep {
+  opacity: 0.3;
+}
+
+.footer-credits-dot {
+  opacity: 0.3;
+}
+
+/* BACK TO TOP */
+.back-to-top {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.6);
+
+  padding: 0.4rem 0.8rem;
+  border-radius: 2px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  transition: all 0.2s ease;
+}
+
+.back-to-top:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+.back-to-top .arr {
+  font-size: 0.9rem;
+}
+
+
+@media (max-width: 900px) {
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+  .header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px; gap:24px; }
+  .eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--blue-light); margin-bottom:10px; }
+  h1 { font-family:'Barlow Condensed',sans-serif; font-size:clamp(42px,5.5vw,68px); font-weight:900; line-height:.9; letter-spacing:1px; color:var(--charcoal); text-transform:uppercase; margin-bottom:12px; }
+  h1 em { color:var(--blue-light); font-style:normal; }
+  .divider { width:56px; height:4px; background:linear-gradient(90deg,var(--blue-light),var(--rose)); margin:0 0 16px; }
+  .subtitle { font-size:13.5px; color:#555; max-width:620px; line-height:1.75; }
+  .header-badge { background:var(--blue-deep); color:#fff; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:12px; letter-spacing:2px; text-transform:uppercase; padding:8px 18px; border-radius:4px; white-space:nowrap; flex-shrink:0; align-self:flex-start; margin-top:6px; }
+
+  .intro-box { background:var(--card); border-left:4px solid var(--blue-light); border-radius:0 10px 10px 0; padding:18px 22px; margin-bottom:24px; font-size:13.5px; color:#555; line-height:1.75; box-shadow:0 2px 12px rgba(37,67,150,.04); }
+  .intro-box strong { color:var(--charcoal); }
+
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:16px; }
+
+  .panel { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:28px 30px; position:relative; box-shadow:0 2px 20px rgba(37,67,150,.05); margin-bottom:0; }
+  .panel::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; border-radius:12px 12px 0 0; }
+  .panel.blue::before  { background:linear-gradient(90deg,var(--blue-light),transparent); }
+  .panel.rose::before  { background:linear-gradient(90deg,var(--rose),transparent); }
+  .panel.deep::before  { background:linear-gradient(90deg,var(--blue-deep),transparent); }
+  .panel.mid::before   { background:linear-gradient(90deg,var(--blue-mid),transparent); }
+  .panel-label { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:#bbb; margin-bottom:6px; }
+  .panel-title { font-family:'Barlow Condensed',sans-serif; font-size:18px; font-weight:800; text-transform:uppercase; margin-bottom:4px; color:var(--blue-deep); }
+  .panel-explain { font-size:12.5px; color:#666; line-height:1.65; margin-bottom:18px; background:rgba(63,115,235,.04); border-radius:6px; padding:10px 14px; border:1px solid rgba(63,115,235,.1); }
+
+  /* Target bars */
+  .tgt-bar { margin-bottom:14px; cursor:default; }
+  .tgt-hd { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; gap:12px; }
+  .tgt-name { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; color:var(--charcoal); flex:1; line-height:1.3; }
+  .tgt-n { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:900; flex-shrink:0; }
+  .tgt-track { height:8px; background:rgba(37,67,150,.08); border-radius:4px; overflow:hidden; }
+  .tgt-fill { height:100%; border-radius:4px; transition:width 1.2s cubic-bezier(.16,1,.3,1); }
+  .tgt-tools { font-size:11px; color:#aaa; margin-top:4px; line-height:1.5; font-style:italic; }
+
+  /* Bubble chart SVG */
+  .bubble-wrap { position:relative; }
+  svg { display:block; width:100%; overflow:visible; }
+
+  /* Val bar chart */
+  .val-bar { display:flex; align-items:center; gap:10px; margin-bottom:10px; cursor:default; }
+  .val-name { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; color:var(--charcoal); width:120px; flex-shrink:0; text-align:right; line-height:1.3; }
+  .val-track { flex:1; height:18px; background:rgba(37,67,150,.06); border-radius:3px; overflow:hidden; position:relative; }
+  .val-fill { height:100%; border-radius:3px; transition:width 1.3s cubic-bezier(.16,1,.3,1); display:flex; align-items:center; justify-content:flex-end; padding-right:6px; }
+  .val-amt { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:800; color:#fff; white-space:nowrap; }
+  .val-note { font-size:10px; color:#bbb; width:60px; flex-shrink:0; font-style:italic; }
+
+  /* KPI */
+  .ins { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:22px 20px; border-left:4px solid var(--blue-light); box-shadow:0 2px 12px rgba(37,67,150,.04); }
+  .ins:nth-child(2) { border-left-color:var(--rose); }
+  .ins:nth-child(3) { border-left-color:var(--blue-deep); }
+  .ins-num { font-family:'Barlow Condensed',sans-serif; font-size:54px; font-weight:900; line-height:1; color:var(--blue-light); margin-bottom:4px; }
+  .ins:nth-child(2) .ins-num { color:var(--rose); }
+  .ins:nth-child(3) .ins-num { color:var(--blue-deep); }
+  .ins-label { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:#bbb; margin-bottom:6px; }
+  .ins-desc { font-size:12.5px; color:#666; line-height:1.6; }
+  .ins-desc strong { color:var(--charcoal); }
+
+  .source-block { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:14px 18px; margin-top:16px; display:flex; align-items:flex-start; gap:12px; }
+  .source-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
+  .source-text { font-size:11.5px; color:#888; line-height:1.6; font-style:italic; }
+  .source-text strong { font-style:normal; color:#666; font-weight:700; font-family:'Barlow Condensed',sans-serif; letter-spacing:.5px; font-size:12px; }
+
+  .section-hd { margin:28px 0 10px; }
+  .section-num { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#bbb; margin-bottom:4px; }
+  .section-title { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:900; color:var(--charcoal); text-transform:uppercase; margin-bottom:6px; }
+  .section-explain { font-size:13px; color:#666; line-height:1.7; max-width:780px; margin-bottom:14px; }
+
+  .tooltip { position:fixed; background:var(--charcoal); border-radius:8px; padding:12px 16px; pointer-events:none; z-index:200; opacity:0; transition:opacity .15s; min-width:220px; max-width:320px; box-shadow:0 8px 32px rgba(0,0,0,.2); }
+  .tt-title { font-family:'Barlow Condensed',sans-serif; font-size:18px; font-weight:800; color:#fff; margin-bottom:6px; letter-spacing:1px; }
+  .tt-text { font-size:12px; color:#bbb; line-height:1.6; }
+  .tt-sep { border-top:1px solid rgba(255,255,255,.1); margin:6px 0; }
+
+  nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--blue, #254396);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+  height: 54px;
+  border-bottom: 2px solid var(--blue-mid, #3B5AA5);
+}
+
+/* LOGO */
+.nav-logo {
+  display: flex;
+  align-items: center;
+}
+.nav-logo img {
+  height: 28px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+/* LINKS */
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: #fff;
+}
+
+/* HAMBURGER */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 22px;
+  height: 2px;
+  background: #fff;
+  display: block;
+}
+
+@media (max-width: 768px) {
+
+  .nav-links {
+    position: absolute;
+    top: 54px;
+    left: 0;
+    width: 100%;
+    background: var(--blue, #254396);
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 1.5rem 2rem;
+    display: none;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+</style>
+</head>
+<nav>
+  <a href="index.html" class="nav-logo"><img src="img/logo-dm2i.svg" alt="DM2i"/></a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="cartographie.html">Cartographie</a></li>
+    <li><a href="dataviz-acteurs.html">Acteurs</a></li>
+    <li><a href="dataviz-cibles-valeurs.html">Cibles</a></li>
+    <li><a href="dataviz-financeurs.html">Financeurs</a></li>
+    <li><a href="dataviz-outils.html">Outils</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+<body>
+  
+  <div class="main">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div>
+        <div class="eyebrow">DM2i · Programme de recherche · Visualisation 3 sur 4</div>
+        <h1>À QUI S'ADRESSENT<br>LES <em>OUTILS IA</em><br>MUSICAUX ?</h1>
+        <div class="divider"></div>
+        <p class="subtitle">Cartographie des publics cibles (<em>target</em>) et des valorisations financières (<em>val</em>) des 46 outils d'IA musicale recensés — corpus DM2i, 2025.</p>
+      </div>
+      <div class="header-badge">46 outils · 7 cibles</div>
+    </div>
+
+    <div class="intro-box">
+      <strong>Comment lire cette visualisation ?</strong> Chaque outil d'IA musicale s'adresse à un ou plusieurs types d'utilisateurs. Le champ <strong>target</strong> du corpus DM2i contient pour chaque outil une description textuelle de ses utilisateurs cibles. Le champ <strong>val</strong> permet de comparer les levées de fonds de ces outils et d'identifier les acteurs qui concentrent le capital.
+    </div>
+
+    <!-- KPI -->
+    <div class="grid3">
+      <div class="ins">
+        <div class="ins-label">Cible dominante</div>
+        <div class="ins-num">27</div>
+        <div class="ins-desc">outils ciblent les <strong>créateurs de contenu</strong> (YouTubers, podcasteurs, streamers) c'est la catégorie la plus large, devant les studios et les professionnels de l'industrie</div>
+      </div>
+      <div class="ins">
+        <div class="ins-label">Musiciens indépendants</div>
+        <div class="ins-num">8</div>
+        <div class="ins-desc">outils seulement ciblent explicitement les <strong>musiciens indépendants</strong> sur 46 c'est une minorité, malgré le discours de démocratisation porté par l'IA musicale</div>
+      </div>
+      <div class="ins">
+        <div class="ins-label">Concentration du capital</div>
+        <div class="ins-num">27</div>
+        <div class="ins-desc">outils avec une valorisation documentée sur 46. <strong>ElevenLabs (3,3 Md$)</strong> pèse autant que les 20 outils suivants réunis</div>
+      </div>
+    </div>
+
+    <!-- SECTION 1 : CIBLES -->
+    <div class="section-hd">
+      <div class="section-title">Qui sont les utilisateurs visés ?</div>
+      <div class="section-explain">Répartition des 46 outils par type d'utilisateur cible. Un outil peut viser plusieurs publics simultanément. Les catégories sont issues du champ <code>target</code> du corpus DM2i.</div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel blue">
+        <div class="panel-label">7 catégories · champ target</div>
+        <div class="panel-title">Cibles des outils IA</div>
+        <div class="panel-explain">Le champ <code>target</code> contient une description textuelle pour chaque outil. Survolez pour voir les outils concernés.</div>
+        <div id="target-bars"></div>
+        <p style="font-size:11px;color:#bbb;margin-top:14px;line-height:1.6;font-style:italic">Les 7 catégories présentées résultent d'un regroupement éditorial manuel des descriptions textuelles du champ <em>target</em> — elles ne correspondent pas à des valeurs structurées du fichier JSON.</p>
+      </div>
+
+      <div class="panel rose">
+        <div class="panel-label">Lecture · Qui profite de l'IA musicale ?</div>
+        <div class="panel-title">Une démocratisation à nuancer</div>
+        <div class="panel-explain">La distribution des cibles révèle une tension : l'IA musicale est davantage conçue pour les <strong>usages commerciaux et de contenu</strong> que pour l'expression artistique indépendante.</div>
+        <svg id="bubble-svg" viewBox="0 0 400 340" style="margin-top:8px"></svg>
+      </div>
+    </div>
+
+    <!-- SECTION 2 : VALORISATIONS -->
+    <div class="section-hd">
+      <div class="section-title">Combien valent ces outils ?</div>
+      <div class="section-explain">Valorisations financières documentées pour 27 outils sur 46. Les montants sont issus du champ <code>val</code> du corpus : levées de fonds, valorisations au dernier tour. Les 19 outils sans données sont exclus.</div>
+    </div>
+
+    <div class="panel deep" style="margin-bottom:16px">
+      <div class="panel-label">27 outils avec val documentée · classés par montant décroissant</div>
+      <div class="panel-title">Valorisations des outils IA musicaux</div>
+      <div class="panel-explain">Les barres représentent les montants en millions de dollars. Survolez pour voir le montant exact et le type de service.</div>
+      <div id="val-bars" style="margin-top:4px"></div>
+    </div>
+
+    <div class="source-block">
+      <span class="source-icon">📁</span>
+      <div class="source-text">
+        <strong>Source :</strong> data_service.json, corpus DM2i — IUT Bordeaux Montaigne, 2025 (46 outils valides).
+        Champs exploités : <em>metadata.target</em> (cibles, n=46) · <em>metadata.val</em> (valorisation, n=27 avec donnée documentée).
+        19 outils sans valorisation documentée sont exclus de la partie valorisations.
+      </div>
+    </div>
+
+<div class="tooltip" id="tooltip"></div>
+</div>
+<footer>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <a href="index.html" class="footer-logo"><img src="img/logo-dm2i.svg" alt="DM2i"/></a>
+      <p class="footer-tagline">Un programme de recherche sur les données musicales, l'IA et les nouvelles formes d'indépendance dans la filière musicale française.</p>
+      <a href="mailto:contact@dm2i.fr" class="footer-contact">Nous contacter</a>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="index.html#about">Le projet</a></li>
+        <li><a href="index.html#explorer">Découvertes</a></li>
+        <li><a href="index.html#axes">Nos angles</a></li>
+        <li><a href="index.html#chaine">La filière</a></li>
+        <li><a href="index.html#partners">Partenaires</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Résultats</h4>
+      <ul>
+        <li><a href="cartographie.html">Cartographie interactive</a></li>
+        <li><a href="dataviz-outils.html">Outils &amp; création</a></li>
+        <li><a href="dataviz-acteurs.html">Pouvoir &amp; plateformes</a></li>
+        <li><a href="dataviz-cibles-valeurs.html">Usages &amp; publics</a></li>
+        <li><a href="dataviz-financeurs.html">Investissements</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 DM2i — Données Musicales, IA &amp; (In)dépendance</span>
+    <div class="footer-credits">
+      <span class="footer-credits-label">Site réalisé par</span>
+      <span class="footer-credits-sep">—</span>
+      <a href="https://www.linkedin.com/in/priscilla-natalia" target="_blank" rel="noopener">Priscilla Natalia</a>
+      <span class="footer-credits-dot">•</span>
+      <a href="https://www.linkedin.com/in/laura-cocq-duche" target="_blank" rel="noopener">Laura Cocq–Duché</a>
+      <span class="footer-credits-dot">•</span>
+      <a href="https://www.linkedin.com/in/marine-louis" target="_blank" rel="noopener">Marine Louis</a>
+      <span class="footer-credits-dot">•</span>
+      <a href="https://www.linkedin.com/in/fanta-kouyate" target="_blank" rel="noopener">Fanta Kouyaté</a>
+    </div>
+    <button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+      <span class="arr">↑</span> Haut de page
+    </button>
+  </div>
+</footer>
+<script>
+const tt = document.getElementById('tooltip');
+function showTip(e, title, text) { tt.innerHTML = `<div class="tt-title">${title}</div><div class="tt-text">${text}</div>`; tt.style.opacity = '1'; moveTip(e); }
+function moveTip(e) { tt.style.left = (e.clientX + 16) + 'px'; tt.style.top = (e.clientY - 10) + 'px'; }
+function hideTip() { tt.style.opacity = '0'; }
+const burger = document.getElementById('hamburger');
+const nav = document.getElementById('nav-links');
+
+burger.addEventListener('click', () => {
+  nav.classList.toggle('open');
+});
+// ── DATA — strictly from data_service.json fields: name, target, val ──────────
+
+const targetData = [
+  {
+    label: 'Créateurs de contenu',
+    sublabel: 'YouTubers, podcasteurs, streamers',
+    n: 27, pct: 100,
+    color: '#3F73EB',
+    tools: 'Mubert, Soundful, Endel, Loudly, Riffusion, ElevenLabs, Suno, Udio, Beatoven ai, Boomy, mureka, Musicful, Ecrett Music, Aiode, Bridge Audio, Kits AI, Soundraw, ACE Studio, Music.ai, boomobox, Canva AI, Fadr, Infinite album, Musiio by Soundcloud, Rightsify, Rotor vidéos, Too Lost'
+  },
+  {
+    label: 'Studios / agences / marques',
+    sublabel: 'B2B, production commerciale',
+    n: 15, pct: 56,
+    color: '#3B5AA5',
+    tools: 'AIVA, Amper Music, Audio Shake, Cyanite, LANDR, Mubert, Spleeter, iZotope, Music.ai, ACE Studio, Soundful, Rightsify, MusicStory, The Echo Nest, RoEx'
+  },
+  {
+    label: 'Labels / pros industrie',
+    sublabel: 'Labels, éditeurs, bibliothèques musicales',
+    n: 10, pct: 37,
+    color: '#254396',
+    tools: 'AIVA, Audio Shake, Cyanite, The Echo Nest, MusicStory, DistroKid, LALAL.AI, eMastered, Musiio by Soundcloud, Rightsify'
+  },
+  {
+    label: 'Marques / agences marketing',
+    sublabel: 'Communication, publicité',
+    n: 9, pct: 33,
+    color: '#965A74',
+    tools: 'Mubert, Soundful, Endel, Beatoven ai, Soundraw, boomobox, Music.ai, Ecrett Music, Loudly'
+  },
+  {
+    label: 'Musiciens indépendants',
+    sublabel: 'Artistes autoproduits',
+    n: 8, pct: 30,
+    color: '#A06B85',
+    tools: 'LANDR, Kits AI, LALAL.AI, eMastered, RipX, iZotope, ACE Studio, Moises'
+  },
+  {
+    label: 'Artistes débutants / amateurs',
+    sublabel: 'Grand public, usage non-professionnel',
+    n: 3, pct: 11,
+    color: '#7B4F65',
+    tools: 'Boomy, Soundraw, Kits AI'
+  },
+  {
+    label: 'Jeux vidéo / développeurs',
+    sublabel: 'Applications, intégration technique',
+    n: 2, pct: 7,
+    color: '#6B8FD4',
+    tools: 'Mubert, Endel'
+  },
+];
+
+// Target bars
+const tgtEl = document.getElementById('target-bars');
+targetData.forEach(d => {
+  tgtEl.innerHTML += `<div class="tgt-bar"
+    onmouseenter="showTip(event,'${d.label}','${d.n} outils sur 46<br><br>${d.tools}')"
+    onmousemove="moveTip(event)" onmouseleave="hideTip()">
+    <div class="tgt-hd">
+      <div>
+        <div class="tgt-name">${d.label}</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;color:#bbb;letter-spacing:.5px">${d.sublabel}</div>
+      </div>
+      <span class="tgt-n" style="color:${d.color}">${d.n}</span>
+    </div>
+    <div class="tgt-track"><div class="tgt-fill" style="width:0%;background:${d.color}" data-w="${d.pct}%"></div></div>
+  </div>`;
+});
+
+// Bubble chart — proportional circles by n
+const bSvg = document.getElementById('bubble-svg');
+const bubbles = [
+  { label:'Créateurs\nde contenu', n:27, x:200, y:130, r:80, color:'#3F73EB' },
+  { label:'Studios\n/ agences', n:15, x:80,  y:230, r:55, color:'#3B5AA5' },
+  { label:'Labels\n/ pros', n:10, x:320, y:240, r:45, color:'#254396' },
+  { label:'Marques', n:9,  x:360, y:130, r:40, color:'#965A74' },
+  { label:'Musiciens\nindép.', n:8,  x:80,  y:105, r:36, color:'#A06B85' },
+  { label:'Débutants', n:3,  x:200, y:290, r:22, color:'#7B4F65' },
+  { label:'Devs', tooltip:'Développeurs', n:2,  x:310, y:50,  r:18, color:'#6B8FD4' },
+];
+
+let bHtml = '';
+bubbles.forEach(b => {
+  const tipLabel = b.tooltip || b.label.replace('\n',' ');
+  bHtml += `<circle cx="${b.x}" cy="${b.y}" r="${b.r}" fill="${b.color}" fill-opacity="0.15" stroke="${b.color}" stroke-width="1.5" style="cursor:pointer"
+    onmouseenter="showTip(event,'${tipLabel}','${b.n} outils sur 46')"
+    onmousemove="moveTip(event)" onmouseleave="hideTip()"/>`;
+  bHtml += `<text x="${b.x}" y="${b.y - 6}" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-size="11" font-weight="800" fill="${b.color}" pointer-events="none">${b.n}</text>`;
+  const lines = b.label.split('\n');
+  lines.forEach((l, i) => {
+    bHtml += `<text x="${b.x}" y="${b.y + 8 + i*13}" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-size="9.5" font-weight="700" fill="${b.color}" fill-opacity="0.8" pointer-events="none">${l}</text>`;
+  });
+});
+bSvg.innerHTML = bHtml;
+
+// ── VALORISATIONS — champ val, data_service.json ──────────────────────────────
+// Only numeric values extracted from val field, sorted descending
+// Units normalized to M$. Cyanite (800 000 €) and RoEx (250 000 £) excluded as non-M$ micro-amounts
+const valData = [
+  { name:'ElevenLabs',      amt:3300,   str:'3 300 M$',  type:'Génération',                 color:'#3F73EB' },
+  { name:'DistroKid',       amt:1300,   str:'1 300 M$',  type:'Distribution',               color:'#254396' },
+  { name:'Stability AI',    amt:1000,   str:'~1 000 M$', type:'Génération',                 color:'#3B5AA5' },
+  { name:'Canva AI',        amt:200,    str:'200 M$',    type:'Génération',                 color:'#3B5AA5' },
+  { name:'Suno',            amt:125,    str:'125 M$',    type:'Génération',                 color:'#3F73EB' },
+  { name:'Moises',          amt:50.2,   str:'50,2 M$',   type:'Génération',                 color:'#965A74' },
+  { name:'Music.ai',        amt:40,     str:'40 M$',     type:'Génération · Transformation',color:'#A06B85' },
+  { name:'Endel',           amt:35,     str:'35 M$',     type:'Génération',                 color:'#3F73EB' },
+  { name:'LANDR',           amt:26,     str:'26 M$',     type:'Distribution',               color:'#254396' },
+  { name:'iZotope',         amt:14.5,   str:'14,5 M$',   type:'Transformation',             color:'#3B5AA5' },
+  { name:'Udio',            amt:10,     str:'10 M$',     type:'Génération',                 color:'#3F73EB' },
+  { name:'Amper Music',     amt:9,      str:'9 M$',      type:'Génération',                 color:'#965A74' },
+  { name:'boomobox',        amt:7,      str:'7 M$',      type:'Génération · Transformation',color:'#A06B85' },
+  { name:'Rotor vidéos',    amt:6.3,    str:'6,3 M$',    type:'Génération',                 color:'#3F73EB' },
+  { name:'Aiode',           amt:5.5,    str:'5,5 M$',    type:'Génération · Transformation',color:'#3B5AA5' },
+  { name:'Boomy',           amt:5.38,   str:'5,38 M$',   type:'Génération',                 color:'#3F73EB' },
+  { name:'Kits AI',         amt:5.1,    str:'5,1 M$',    type:'Génération · Transformation',color:'#A06B85' },
+  { name:'Loudly',          amt:5,      str:'5 M$',      type:'Génération',                 color:'#3F73EB' },
+  { name:'Soundful',        amt:4.5,    str:'4,5 M$',    type:'Génération · Distribution',  color:'#254396' },
+  { name:'Mubert',          amt:3.6,    str:'3,6 M$',    type:'Génération',                 color:'#3F73EB' },
+  { name:'Ecrett Music',    amt:3,      str:'3 M$',      type:'Génération',                 color:'#3F73EB' },
+  { name:'Audio Shake',     amt:2.7,    str:'2,7 M$',    type:'Traitement',                 color:'#3B5AA5' },
+  { name:'AIVA',            amt:2.69,   str:'2,69 M$',   type:'Génération',                 color:'#3F73EB' },
+  { name:'Beatoven ai',     amt:2.4,    str:'2,4 M$',    type:'Génération',                 color:'#965A74' },
+  { name:'Musiio/SC',       amt:1.06,   str:'1,06 M$',   type:'Génération · Détection',     color:'#6B8FD4' },
+];
+
+// Log scale: width = log(amt+1)/log(3301) * 100%
+const logMax = Math.log10(3301);
+const valEl = document.getElementById('val-bars');
+valData.forEach(d => {
+  const w = (Math.log10(d.amt + 1) / logMax * 100).toFixed(1);
+  // Color by magnitude
+  let barColor = d.color;
+  if (d.amt >= 1000) barColor = '#254396';
+  else if (d.amt >= 100) barColor = '#3F73EB';
+  else if (d.amt >= 20)  barColor = '#3B5AA5';
+  else if (d.amt >= 5)   barColor = '#965A74';
+  else                    barColor = '#A06B85';
+
+  valEl.innerHTML += `<div class="val-bar"
+    onmouseenter="showTip(event,'${d.name}','${d.str}<br>${d.type}<br><br><em>champ val — data_service.json</em>')"
+    onmousemove="moveTip(event)" onmouseleave="hideTip()">
+    <div class="val-name">${d.name}</div>
+    <div class="val-track">
+      <div class="val-fill" style="width:0%;background:${barColor}" data-w="${w}%">
+        <span class="val-amt">${d.str}</span>
+      </div>
+    </div>
+  </div>`;
+});
+
+setTimeout(() => {
+  document.querySelectorAll('.tgt-fill').forEach(el => el.style.width = el.getAttribute('data-w'));
+  document.querySelectorAll('.val-fill').forEach(el => el.style.width = el.getAttribute('data-w'));
+}, 200);
+</script>
+</body>
+</html>

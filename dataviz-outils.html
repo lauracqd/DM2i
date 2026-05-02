@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dataviz 1 — L'explosion des outils IA musicaux</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-deep:  #254396;
+    --blue-mid:   #3B5AA5;
+    --blue-light: #3F73EB;
+    --cream:      #F8F8F8;
+    --rose:       #965A74;
+    --charcoal:   #2B2F32;
+    --border:     rgba(37,67,150,.12);
+    --card:       #fff;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body  *{margin:0;padding:0;box-sizing:border-box;}
+  .main{ background:var(--cream); color:var(--charcoal); font-family:'Noto Serif',serif; padding:48px 52px 64px; min-height:100vh; }
+
+/* ─── NAVBAR ─── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--blue, #254396);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+  height: 54px;
+  border-bottom: 2px solid var(--blue-mid, #3B5AA5);
+}
+
+/* LOGO */
+.nav-logo {
+  display: flex;
+  align-items: center;
+}
+.nav-logo img {
+  height: 28px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+/* LINKS */
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: #fff;
+}
+
+/* HAMBURGER */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 22px;
+  height: 2px;
+  background: #fff;
+  display: block;
+}
+
+@media (max-width: 768px) {
+
+  .nav-links {
+    position: absolute;
+    top: 54px;
+    left: 0;
+    width: 100%;
+    background: var(--blue, #254396);
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 1.5rem 2rem;
+    display: none;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--dark, #2B2F32);
+  color: rgba(255,255,255,0.7);
+  padding: 3.5rem 2.5rem 2rem;
+  margin-top: 4rem;
+}
+
+/* MAIN GRID */
+.footer-main {
+  max-width: 1100px;
+  margin: 0 auto 2rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 2.5rem;
+}
+
+/* BRAND BLOCK */
+.footer-brand {
+  max-width: 420px;
+}
+
+.footer-logo img {
+  height: 36px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  margin-bottom: 1rem;
+}
+
+.footer-tagline {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+  color: rgba(255,255,255,0.6);
+}
+
+/* CONTACT */
+.footer-contact {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.footer-contact:hover {
+  border-color: #fff;
+}
+
+/* COLUMNS */
+.footer-col h4 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.footer-col ul {
+  list-style: none;
+}
+
+.footer-col li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-col a {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-col a:hover {
+  color: #fff;
+}
+
+/* ─── BOTTOM BAR ─── */
+.footer-bottom {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* COPYRIGHT */
+.footer-copy {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+}
+
+/* CREDITS */
+.footer-credits {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.footer-credits a {
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+}
+
+.footer-credits a:hover {
+  color: #fff;
+}
+
+.footer-credits-label {
+  opacity: 0.6;
+}
+
+.footer-credits-sep {
+  opacity: 0.3;
+}
+
+.footer-credits-dot {
+  opacity: 0.3;
+}
+
+/* BACK TO TOP */
+.back-to-top {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.6);
+
+  padding: 0.4rem 0.8rem;
+  border-radius: 2px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  transition: all 0.2s ease;
+}
+
+.back-to-top:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+.back-to-top .arr {
+  font-size: 0.9rem;
+}
+
+
+@media (max-width: 900px) {
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+  /* ── HEADER ── */
+  .header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px; gap:24px; }
+  .eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--blue-light); margin-bottom:10px; }
+  h1 { font-family:'Barlow Condensed',sans-serif; font-size:clamp(42px,5.5vw,68px); font-weight:900; line-height:.9; letter-spacing:1px; color:var(--charcoal); text-transform:uppercase; margin-bottom:12px; }
+  h1 em { color:var(--blue-light); font-style:normal; }
+  .divider { width:56px; height:4px; background:linear-gradient(90deg,var(--blue-light),var(--rose)); margin:0 0 16px; }
+  .subtitle { font-size:13.5px; color:#555; max-width:620px; line-height:1.75; }
+  .header-badge { background:var(--blue-deep); color:#fff; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:12px; letter-spacing:2px; text-transform:uppercase; padding:8px 18px; border-radius:4px; white-space:nowrap; flex-shrink:0; align-self:flex-start; margin-top:6px; }
+
+  /* ── INTRO EXPLICATION ── */
+  .intro-box {
+    background: var(--card);
+    border-left: 4px solid var(--blue-light);
+    border-radius: 0 10px 10px 0;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    font-size: 13.5px; color: #555; line-height: 1.75;
+    box-shadow: 0 2px 12px rgba(37,67,150,.04);
+  }
+  .intro-box strong { color: var(--charcoal); }
+
+  /* ── CHART PANEL ── */
+  .chart-block { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:32px 36px 24px; margin-bottom:8px; position:relative; box-shadow:0 2px 20px rgba(37,67,150,.05); }
+  .chart-block::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,var(--blue-light),var(--rose),transparent); border-radius:12px 12px 0 0; }
+  .chart-title { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; letter-spacing:.5px; text-transform:uppercase; color:var(--blue-deep); margin-bottom:4px; }
+  .chart-subtitle { font-size:13px; color:#888; margin-bottom:6px; }
+  .chart-explain { font-size:12.5px; color:#666; line-height:1.65; margin-bottom:18px; background:rgba(63,115,235,.04); border-radius:6px; padding:10px 14px; border:1px solid rgba(63,115,235,.1); }
+  .legend { display:flex; gap:20px; flex-wrap:wrap; margin-bottom:18px; }
+  .legend-item { display:flex; align-items:center; gap:8px; font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#555; }
+  .legend-dot { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
+  svg { display:block; width:100%; overflow:visible; }
+
+  /* ── SOURCE BLOCK ── */
+  .source-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 22px;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .source-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
+  .source-text { font-size:11.5px; color:#888; line-height:1.6; font-style:italic; }
+  .source-text strong { font-style:normal; color:#666; font-weight:700; font-family:'Barlow Condensed',sans-serif; letter-spacing:.5px; font-size:12px; }
+
+  /* ── KPI CARDS ── */
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:8px; }
+  .grid2 { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:8px; }
+  .ins { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:22px 20px; border-left:4px solid var(--blue-light); box-shadow:0 2px 12px rgba(37,67,150,.04); }
+  .ins:nth-child(2) { border-left-color:var(--rose); }
+  .ins:nth-child(3) { border-left-color:var(--blue-deep); }
+  .ins-num { font-family:'Barlow Condensed',sans-serif; font-size:54px; font-weight:900; line-height:1; color:var(--blue-light); margin-bottom:4px; }
+  .ins:nth-child(2) .ins-num { color:var(--rose); }
+  .ins:nth-child(3) .ins-num { color:var(--blue-deep); }
+  .ins-label { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:#bbb; margin-bottom:6px; }
+  .ins-desc { font-size:12.5px; color:#666; line-height:1.6; }
+  .ins-desc strong { color:var(--charcoal); }
+
+  /* ── SECONDARY CARDS ── */
+  .sc { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:24px 22px; box-shadow:0 2px 12px rgba(37,67,150,.04); }
+  .sc-label { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--blue-mid); margin-bottom:8px; }
+  .sc-title { font-family:'Barlow Condensed',sans-serif; font-size:17px; font-weight:800; color:var(--charcoal); margin-bottom:6px; text-transform:uppercase; }
+  .sc-explain { font-size:12px; color:#888; line-height:1.6; margin-bottom:14px; }
+
+  /* ── MOD BARS ── */
+  .mod-bar { margin-bottom:14px; }
+  .mod-hd { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:5px; }
+  .mod-name { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; color:var(--charcoal); }
+  .mod-n { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:900; }
+  .mod-track { height:6px; background:rgba(37,67,150,.08); border-radius:4px; overflow:hidden; }
+  .mod-fill { height:100%; border-radius:4px; transition:width 1.2s cubic-bezier(.16,1,.3,1); }
+
+  /* ── KPI ROW ── */
+  .kpi-row { display:flex; align-items:baseline; gap:12px; margin-bottom:4px; }
+  .kpi-num { font-family:'Barlow Condensed',sans-serif; font-size:42px; font-weight:900; line-height:1; }
+  .kpi-text { font-size:12.5px; color:#666; line-height:1.55; }
+  .kpi-sep { height:1px; background:var(--border); margin:12px 0; }
+
+  /* ── TOOLTIP ── */
+  .tooltip { position:fixed; background:var(--charcoal); border-radius:8px; padding:12px 16px; pointer-events:none; z-index:200; opacity:0; transition:opacity .15s; min-width:200px; box-shadow:0 8px 32px rgba(0,0,0,.2); }
+  .tt-title { font-family:'Barlow Condensed',sans-serif; font-size:18px; font-weight:800; color:#fff; margin-bottom:8px; letter-spacing:1px; }
+  .tt-row { display:flex; justify-content:space-between; gap:12px; font-family:'Barlow Condensed',sans-serif; font-size:13px; color:#aaa; margin-bottom:3px; }
+  .tt-row span:last-child { font-weight:800; color:#fff; }
+  .tt-sep { border-top:1px solid rgba(255,255,255,.1); margin:6px 0; }
+  .tt-names { font-family:'Noto Serif',serif; font-size:11px; color:#bbb; margin-top:4px; line-height:1.5; }
+
+  /* ── SECTION TITLE ── */
+  .section-title { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#bbb; margin:20px 0 10px; }
+</style>
+</head>
+<nav>
+  <a href="index.html" class="nav-logo"><img src="img/logo-dm2i.svg" alt="DM2i"/></a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="cartographie.html">Cartographie</a></li>
+    <li><a href="dataviz-acteurs.html">Acteurs</a></li>
+    <li><a href="dataviz-cibles-valeurs.html">Cibles</a></li>
+    <li><a href="dataviz-financeurs.html">Financeurs</a></li>
+    <li><a href="dataviz-outils.html">Outils</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+<body>
+<div class="main">
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <div class="eyebrow">DM2i · Programme de recherche · Visualisation 1 sur 4</div>
+    <h1>L'EXPLOSION DES<br><em>OUTILS IA</em><br>DANS LA MUSIQUE</h1>
+    <div class="divider"></div>
+    <p class="subtitle">Évolution cumulative des outils d'IA musicaux par <em>typeService</em>, de 2001 à 2025 — corpus DM2i (46 outils).</p>
+  </div>
+  <div class="header-badge">46 outils recensés</div>
+</div>
+
+<!-- INTRO EXPLICATION -->
+<div class="intro-box">
+  <strong>Comment lire ce graphique ?</strong> Chaque courbe représente une catégorie d'outils IA. Le chiffre à droite indique le total en 2025. Plus la courbe monte vite, plus les lancements s'accélèrent. La ligne pointillée marque le <strong>tournant 2016</strong> : l'année où les modèles génératifs (capables de composer seuls) ont commencé à se multiplier. <em>Survolez le graphique pour voir le détail de chaque année.</em>
+</div>
+
+<!-- MAIN CHART -->
+<div class="chart-block">
+  <div class="chart-title">Combien d'outils IA musicaux existaient chaque année ?</div>
+  <div class="chart-subtitle">Cumul des outils actifs par catégorie, de 2001 à 2025</div>
+  <div class="legend" id="legend"></div>
+  <svg id="chart" viewBox="0 0 900 340"></svg>
+</div>
+
+<!-- SOURCE CHART -->
+<div class="source-block">
+  <span class="source-icon">📁</span>
+  <div class="source-text">
+    <strong>Source :</strong> data_service.json, corpus DM2i — IUT Bordeaux Montaigne, 2025 (46 outils). Classification par <em>typeService</em> : Génération, Transformation, Traitement, Distribution, Détection. Modalités de traitement (<em>mod</em>) : Text-to-Audio, Audio-to-Audio, Audio-to-label, Audio-to-midi.
+  </div>
+</div>
+
+<!-- KPI ROW -->
+<div class="grid3" style="margin-bottom:22px;">
+  <div class="ins">
+    <div class="ins-label">Total recensé</div>
+    <div class="ins-num">46</div>
+    <div class="ins-desc"><strong>outils IA musicaux</strong> identifiés entre 2001 et 2025 — actifs ou ayant cessé leur activité.</div>
+  </div>
+  <div class="ins">
+    <div class="ins-label">Accélération après 2016</div>
+    <div class="ins-num">×3</div>
+    <div class="ins-desc">Le rythme de création <strong>a triplé après 2016</strong>, porté par l'essor des modèles génératifs capables de composer de la musique à partir de rien.</div>
+  </div>
+  <div class="ins">
+    <div class="ins-label">Catégorie dominante</div>
+    <div class="ins-num">36</div>
+    <div class="ins-desc">outils de <strong>Génération</strong>, soit <strong>78 % du corpus</strong>. Créer de la musique avec l'IA est de loin le cas d'usage le plus développé.</div>
+  </div>
+</div>
+
+<!-- SOURCE KPI -->
+<div class="source-block">
+  <span class="source-icon">📁</span>
+  <div class="source-text">
+    <strong>Sources :</strong> Calculs DM2i à partir de data_service.json. Le ratio ×3 compare le rythme de création d'outils sur 2010–2016 vs 2016–2022. — IFPI Global Music Report 2024 · Deezer, rapport annuel 2024 · Grand View Research, <em>AI in Music Market Size Report</em>, 2023.
+  </div>
+</div>
+
+<!-- MODALITIES + CONTEXT -->
+<div class="section-title">Pour aller plus loin</div>
+<div class="grid2" style="margin-bottom:8px;">
+  <div class="sc">
+    <div class="sc-label">Modalités de traitement</div>
+    <div class="sc-title">Comment l'IA travaille le son</div>
+    <div class="sc-explain">Nombre d'outils utilisant chaque modalité — un outil peut en combiner plusieurs.</div>
+    <div id="mod-bars"></div>
+  </div>
+  <div class="sc">
+    <div class="sc-label">Mise en contexte · Industrie musicale</div>
+    <div class="sc-title">L'impact de l'IA en chiffres</div>
+    <div class="kpi-row">
+      <span class="kpi-num" style="color:var(--rose)">97%</span>
+      <span class="kpi-text">des auditeur·rices <strong style="color:var(--charcoal)">ne distinguent pas</strong> une musique générée par IA d'une musique humaine</span>
+    </div>
+    <div class="kpi-sep"></div>
+    <div class="kpi-row">
+      <span class="kpi-num" style="color:var(--blue-deep)">50&nbsp;000</span>
+      <span class="kpi-text">titres générés par IA <strong style="color:var(--charcoal)">chaque jour</strong> sur Deezer en 2024, soit environ 35 titres par minute</span>
+    </div>
+    <div class="kpi-sep"></div>
+    <div class="kpi-row">
+      <span class="kpi-num" style="color:var(--blue-light)">2,79<span style="font-size:22px"> Md$</span></span>
+      <span class="kpi-text">marché estimé de l'IA générative musicale <strong style="color:var(--charcoal)">d'ici 2030</strong></span>
+    </div>
+  </div>
+</div>
+
+<!-- SOURCE MODALITIES + CONTEXT -->
+<div class="source-block">
+  <span class="source-icon">📁</span>
+  <div class="source-text">
+    <strong>Sources :</strong> 97 % : IFPI Global Music Report 2024 · 50 000 titres/jour : Deezer, rapport annuel 2024 · 2,79 Md$ : Grand View Research, <em>AI in Music Market Size Report</em>, 2023 · Modalités : data_service.json, champ <em>mod</em>, DM2i 2025.
+  </div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+</div>
+<footer>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <a href="index.html" class="footer-logo"><img src="img/logo-dm2i.svg" alt="DM2i"/></a>
+      <p class="footer-tagline">Un programme de recherche sur les données musicales, l'IA et les nouvelles formes d'indépendance dans la filière musicale française.</p>
+      <a href="mailto:contact@dm2i.fr" class="footer-contact">Nous contacter</a>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="index.html#about">Le projet</a></li>
+        <li><a href="index.html#explorer">Découvertes</a></li>
+        <li><a href="index.html#axes">Nos angles</a></li>
+        <li><a href="index.html#chaine">La filière</a></li>
+        <li><a href="index.html#partners">Partenaires</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Résultats</h4>
+      <ul>
+        <li><a href="cartographie.html">Cartographie interactive</a></li>
+        <li><a href="dataviz-outils.html">Outils &amp; création</a></li>
+        <li><a href="dataviz-acteurs.html">Pouvoir &amp; plateformes</a></li>
+        <li><a href="dataviz-cibles-valeurs.html">Usages &amp; publics</a></li>
+        <li><a href="dataviz-financeurs.html">Investissements</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 DM2i — Données Musicales, IA &amp; (In)dépendance</span>
+    <div class="footer-credits">
+      <span class="footer-credits-label">Site réalisé par</span>
+      <span class="footer-credits-sep">—</span>
+      <a href="https://www.linkedin.com/in/priscilla-natalia" target="_blank" rel="noopener">Priscilla Natalia</a>
+      <span class="footer-credits-dot">•</span>
+      <a href="https://www.linkedin.com/in/laura-cocq-duche" target="_blank" rel="noopener">Laura Cocq–Duché</a>
+      <span class="footer-credits-dot">•</span>
+      <a href="https://www.linkedin.com/in/marine-louis" target="_blank" rel="noopener">Marine Louis</a>
+      <span class="footer-credits-dot">•</span>
+      <a href="https://www.linkedin.com/in/fanta-kouyate" target="_blank" rel="noopener">Fanta Kouyaté</a>
+    </div>
+    <button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+      <span class="arr">↑</span> Haut de page
+    </button>
+  </div>
+</footer>
+<script>
+  const burger = document.getElementById('hamburger');
+const nav = document.getElementById('nav-links');
+
+burger.addEventListener('click', () => {
+  nav.classList.toggle('open');
+});
+
+const raw = [
+  { name:'Amadeus Code',    types:['Génération'],                  mod:['Text-to-Audio'],               year:2016 },
+  { name:'Amper Music',     types:['Génération'],                  mod:['Text-to-Audio'],               year:2014 },
+  { name:'Aiva',            types:['Génération'],                  mod:['Text-to-Audio'],               year:2016 },
+  { name:'Antares',         types:['Traitement'],                  mod:['Audio-to-Audio'],              year:1992 },
+  { name:'AudioShake',      types:['Transformation'],              mod:['Audio-to-Audio'],              year:2020 },
+  { name:'AudioStellar',    types:['Génération','Transformation'], mod:['Audio-to-Audio'],              year:2020 },
+  { name:'Beatoven',        types:['Génération'],                  mod:['Text-to-Audio'],               year:2021 },
+  { name:'Boomy',           types:['Génération','Distribution'],   mod:['Text-to-Audio'],               year:2018 },
+  { name:'BandLab',         types:['Génération','Distribution'],   mod:['Text-to-Audio'],               year:2015 },
+  { name:'Chartmetric',     types:['Détection'],                   mod:['Audio-to-label'],              year:2015 },
+  { name:'Cyanite',         types:['Détection'],                   mod:['Audio-to-label'],              year:2018 },
+  { name:'Endel',           types:['Génération'],                  mod:['Text-to-Audio'],               year:2018 },
+  { name:'Essentia',        types:['Traitement','Détection'],      mod:['Audio-to-label'],              year:2013 },
+  { name:'Fadr',            types:['Transformation'],              mod:['Audio-to-Audio'],              year:2020 },
+  { name:'HookSounds',      types:['Génération','Distribution'],   mod:[],                              year:2016 },
+  { name:'Humtap',          types:['Génération'],                  mod:['Audio-to-Audio'],              year:2016 },
+  { name:'iZotope',         types:['Traitement'],                  mod:['Audio-to-Audio'],              year:2001 },
+  { name:'Jukedeck',        types:['Génération'],                  mod:['Text-to-Audio'],               year:2012 },
+  { name:'Kaiber',          types:['Génération'],                  mod:['Text-to-Audio'],               year:2022 },
+  { name:'Kits AI',         types:['Génération','Transformation'], mod:['Audio-to-Audio'],              year:2021 },
+  { name:'Loudly',          types:['Génération'],                  mod:['Text-to-Audio'],               year:2019 },
+  { name:'Moises',          types:['Génération'],                  mod:['Audio-to-Audio'],              year:2019 },
+  { name:'mureka',          types:['Génération'],                  mod:['Text-to-Audio'],               year:2024 },
+  { name:'Musicful',        types:['Génération'],                  mod:['Text-to-Audio'],               year:2021 },
+  { name:'Musiio by SC',    types:['Génération'],                  mod:['Audio-to-label'],              year:2018 },
+  { name:'Rightsify',       types:['Génération'],                  mod:['Audio-to-label'],              year:2013 },
+  { name:'RoEx',            types:['Transformation'],              mod:['Audio-to-Audio'],              year:2022 },
+  { name:'Rotor Vidéos',    types:['Génération'],                  mod:['Audio-to-Audio'],              year:2012 },
+  { name:'Soundful',        types:['Génération','Distribution'],   mod:[],                              year:2019 },
+  { name:'Too Lost',        types:['Distribution'],                mod:['Text-to-Audio'],               year:2023 },
+  { name:'boomobox',        types:['Génération','Transformation'], mod:['Text-to-Audio'],               year:2022 },
+  { name:'Music.ai',        types:['Génération','Transformation'], mod:['Text-to-Audio'],               year:2019 },
+  { name:'ACE Studio',      types:['Génération','Transformation'], mod:['Audio-to-Audio'],              year:2019 },
+  { name:'DistroKid',       types:['Distribution'],                mod:['Audio-to-label'],              year:2013 },
+  { name:'ElevenLabs',      types:['Génération'],                  mod:['Text-to-Audio'],               year:2022 },
+  { name:'LALAL.AI',        types:['Traitement'],                  mod:['Audio-to-Audio'],              year:2020 },
+  { name:'Meta AudioCraft', types:['Génération'],                  mod:['Text-to-Audio'],               year:2023 },
+  { name:'eMastered',       types:['Traitement'],                  mod:['Audio-to-Audio'],              year:2016 },
+  { name:'The Echo Nest',   types:['Traitement','Détection'],      mod:['Audio-to-label'],              year:2005 },
+  { name:'Synthesizer V',   types:[],                              mod:['Audio-to-Audio','Audio-to-midi'],year:2018},
+  { name:'Stability AI',    types:['Génération'],                  mod:['Text-to-Audio'],               year:2019 },
+  { name:'Soundraw',        types:['Génération'],                  mod:['Text-to-Audio'],               year:2020 },
+  { name:'RipX',            types:['Transformation','Traitement'], mod:['Audio-to-Audio'],              year:2009 },
+  { name:'Riffusion',       types:['Génération'],                  mod:['Text-to-Audio'],               year:2022 },
+  { name:'MusicStory',      types:['Traitement'],                  mod:['Audio-to-label'],              year:2008 },
+  { name:'Suno',            types:['Génération'],                  mod:['Text-to-Audio'],               year:2022 },
+];
+
+const CATS=['Génération','Transformation','Traitement','Distribution','Détection'];
+const COLORS={'Génération':'#3F73EB','Transformation':'#965A74','Traitement':'#254396','Distribution':'#3B5AA5','Détection':'#6B8FD4'};
+
+const years=[];
+for(let y=2001;y<=2025;y++) years.push(y);
+const running={}; CATS.forEach(c=>running[c]=0);
+const cum={};
+years.forEach(yr=>{
+  raw.forEach(d=>{ if(d.year===yr) d.types.forEach(t=>{ if(running[t]!==undefined) running[t]++; }); });
+  cum[yr]={}; CATS.forEach(c=>cum[yr][c]=running[c]);
+});
+
+const W=900,H=340,mL=46,mR=90,mT=20,mB=44;
+const cW=W-mL-mR,cH=H-mT-mB;
+const maxV=40;
+function xp(y){ return mL+((y-2001)/(2025-2001))*cW; }
+function yp(v){ return mT+cH-(v/maxV)*cH; }
+
+const svg=document.getElementById('chart');
+let html='';
+
+for(let v=0;v<=40;v+=10){
+  const y=yp(v);
+  html+=`<line x1="${mL}" y1="${y}" x2="${W-mR}" y2="${y}" stroke="rgba(37,67,150,.07)" stroke-width="1"/>`;
+  html+=`<text x="${mL-8}" y="${y+4}" text-anchor="end" font-family="'Barlow Condensed',sans-serif" font-size="11" font-weight="600" fill="#bbb">${v}</text>`;
+}
+[2001,2005,2010,2015,2016,2018,2020,2022,2024,2025].forEach(yr=>{
+  const x=xp(yr);
+  html+=`<line x1="${x}" y1="${mT}" x2="${x}" y2="${mT+cH}" stroke="rgba(37,67,150,.06)" stroke-width="1" stroke-dasharray="3,4"/>`;
+  html+=`<text x="${x}" y="${H-8}" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-size="10" font-weight="600" fill="#bbb">${yr}</text>`;
+});
+
+CATS.forEach(cat=>{
+  const color=COLORS[cat];
+  const pts=years.map(y=>({x:xp(y),y:yp(cum[y][cat])}));
+  let area=`M ${pts[0].x},${yp(0)}`;
+  pts.forEach(p=>area+=` L ${p.x},${p.y}`);
+  area+=` L ${pts[pts.length-1].x},${yp(0)} Z`;
+  html+=`<path d="${area}" fill="${color}" fill-opacity="0.07"/>`;
+  let line=`M ${pts[0].x},${pts[0].y}`;
+  pts.forEach((p,i)=>{ if(i>0) line+=` L ${p.x},${p.y}`; });
+  html+=`<path d="${line}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+  const last=pts[pts.length-1];
+  const lv=cum[2025][cat];
+  if(lv>0){
+    html+=`<circle cx="${last.x}" cy="${last.y}" r="5" fill="${color}" stroke="#fff" stroke-width="2"/>`;
+    html+=`<text x="${last.x+10}" y="${last.y+5}" fill="${color}" font-family="'Barlow Condensed',sans-serif" font-size="18" font-weight="900">${lv}</text>`;
+  }
+});
+
+const x2016=xp(2016);
+html+=`<line x1="${x2016}" y1="${mT}" x2="${x2016}" y2="${mT+cH}" stroke="#3F73EB" stroke-width="1.5" opacity="0.5" stroke-dasharray="4,3"/>`;
+html+=`<rect x="${x2016+4}" y="${mT+4}" width="116" height="22" rx="11" fill="rgba(63,115,235,.1)" stroke="rgba(63,115,235,.25)" stroke-width="1"/>`;
+html+=`<text x="${x2016+62}" y="${mT+18}" text-anchor="middle" fill="#3F73EB" font-family="'Barlow Condensed',sans-serif" font-size="10" font-weight="700" letter-spacing="1.5">↗ TOURNANT 2016</text>`;
+
+years.forEach(yr=>{
+  const x=xp(yr)-cW/years.length/2;
+  html+=`<rect x="${x}" y="${mT}" width="${cW/years.length}" height="${cH}" fill="transparent" class="hz" data-year="${yr}" style="cursor:crosshair"/>`;
+});
+html+=`<line id="cline" x1="0" y1="${mT}" x2="0" y2="${mT+cH}" stroke="rgba(37,67,150,.3)" stroke-width="1" stroke-dasharray="3,3" opacity="0" pointer-events="none"/>`;
+svg.innerHTML=html;
+
+const legendEl=document.getElementById('legend');
+CATS.forEach(c=>{
+  const el=document.createElement('div');
+  el.className='legend-item';
+  el.innerHTML=`<div class="legend-dot" style="background:${COLORS[c]}"></div>${c}`;
+  legendEl.appendChild(el);
+});
+
+// Mod bars — avec labels explicites
+const modData=[
+  {name:'Texte → Audio (composition)',       n:19, pct:100, color:'#3F73EB', detail:'L\'IA crée de la musique à partir d\'un texte ou d\'une description'},
+  {name:'Audio → Audio (transformation)',    n:14, pct:74,  color:'#965A74', detail:'L\'IA modifie ou retravaille un son existant'},
+  {name:'Audio → Étiquette (analyse)',       n:8,  pct:42,  color:'#254396', detail:'L\'IA identifie et classe automatiquement des sons'},
+  {name:'Audio → Partition (transcription)', n:3,  pct:16,  color:'#3B5AA5', detail:'L\'IA convertit un son en notes de musique'},
+];
+const modWrap=document.getElementById('mod-bars');
+modData.forEach(m=>{
+  modWrap.innerHTML+=`<div class="mod-bar">
+    <div class="mod-hd">
+      <span class="mod-name" title="${m.detail}">${m.name}</span>
+      <span class="mod-n" style="color:${m.color}">${m.n}<span style="font-family:'Noto Serif',serif;font-size:11px;color:#999;margin-left:4px">outils</span></span>
+    </div>
+    <div class="mod-track"><div class="mod-fill" style="width:0%;background:${m.color}" data-w="${m.pct}%"></div></div>
+  </div>`;
+});
+setTimeout(()=>document.querySelectorAll('.mod-fill').forEach(el=>el.style.width=el.getAttribute('data-w')),200);
+
+// Tooltip
+const tt=document.getElementById('tooltip');
+const cl=document.getElementById('cline');
+document.querySelectorAll('.hz').forEach(r=>{
+  r.addEventListener('mouseenter',e=>{
+    const yr=+r.getAttribute('data-year');
+    cl.setAttribute('x1',xp(yr));cl.setAttribute('x2',xp(yr));cl.setAttribute('opacity','1');
+    let h=`<div class="tt-title">${yr}</div>`;
+    CATS.forEach(c=>{ const v=cum[yr][c]; if(v>0) h+=`<div class="tt-row"><span style="color:${COLORS[c]}">${c}</span><span>${v}</span></div>`; });
+    const total=CATS.reduce((s,c)=>s+cum[yr][c],0);
+    h+=`<div class="tt-sep"></div><div class="tt-row"><span>Total cumulé</span><span>${total}</span></div>`;
+    const launched=raw.filter(d=>d.year===yr&&d.types.length>0).map(d=>d.name);
+    if(launched.length) h+=`<div class="tt-sep"></div><div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;color:#aaa;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px">Lancé(s) en ${yr}</div><div class="tt-names">${launched.join(' · ')}</div>`;
+    tt.innerHTML=h;tt.style.opacity='1';
+  });
+  r.addEventListener('mousemove',e=>{tt.style.left=(e.clientX+16)+'px';tt.style.top=(e.clientY-20)+'px';});
+  r.addEventListener('mouseleave',()=>{tt.style.opacity='0';cl.setAttribute('opacity','0');});
+});
+</script>
+</body>
+</html>

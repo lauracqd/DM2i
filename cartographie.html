@@ -62,6 +62,272 @@ body {
   flex-direction: column;
 }
 
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body  *{margin:0;padding:0;box-sizing:border-box;}
+  .main{ background:var(--cream); color:var(--charcoal); font-family:'Noto Serif',serif; padding:48px 52px 64px; min-height:100vh; }
+
+/* ─── NAVBAR ─── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--blue, #254396);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+  height: 54px;
+  border-bottom: 2px solid var(--blue-mid, #3B5AA5);
+}
+
+/* LOGO */
+.nav-logo {
+  display: flex;
+  align-items: center;
+}
+.nav-logo img {
+  height: 28px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+/* LINKS */
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: #fff;
+}
+
+/* HAMBURGER */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 22px;
+  height: 2px;
+  background: #fff;
+  display: block;
+}
+
+@media (max-width: 768px) {
+
+  .nav-links {
+    position: absolute;
+    top: 54px;
+    left: 0;
+    width: 100%;
+    background: var(--blue, #254396);
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 1.5rem 2rem;
+    display: none;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--dark, #2B2F32);
+  color: rgba(255,255,255,0.7);
+  padding: 3.5rem 2.5rem 2rem;
+  margin-top: 4rem;
+}
+
+/* MAIN GRID */
+.footer-main {
+  max-width: 1100px;
+  margin: 0 auto 2rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 2.5rem;
+}
+
+/* BRAND BLOCK */
+.footer-brand {
+  max-width: 420px;
+}
+
+.footer-logo img {
+  height: 36px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  margin-bottom: 1rem;
+}
+
+.footer-tagline {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+  color: rgba(255,255,255,0.6);
+}
+
+/* CONTACT */
+.footer-contact {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.footer-contact:hover {
+  border-color: #fff;
+}
+
+/* COLUMNS */
+.footer-col h4 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.footer-col ul {
+  list-style: none;
+}
+
+.footer-col li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-col a {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-col a:hover {
+  color: #fff;
+}
+
+/* ─── BOTTOM BAR ─── */
+.footer-bottom {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* COPYRIGHT */
+.footer-copy {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+}
+
+/* CREDITS */
+.footer-credits {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.footer-credits a {
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+}
+
+.footer-credits a:hover {
+  color: #fff;
+}
+
+.footer-credits-label {
+  opacity: 0.6;
+}
+
+.footer-credits-sep {
+  opacity: 0.3;
+}
+
+.footer-credits-dot {
+  opacity: 0.3;
+}
+
+/* BACK TO TOP */
+.back-to-top {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.6);
+
+  padding: 0.4rem 0.8rem;
+  border-radius: 2px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  transition: all 0.2s ease;
+}
+
+.back-to-top:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+.back-to-top .arr {
+  font-size: 0.9rem;
+}
+
+
+@media (max-width: 900px) {
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
 /* ─── TOPBAR ─── */
 #topbar {
   height: var(--topbar);
@@ -261,10 +527,16 @@ body {
 }
 
 .sb-section {
-  padding: 14px 14px 10px;
+  padding: 6px 8px;                 /* reduced from 14px */
+  margin-bottom: 6px;               /* added for spacing between sections */
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
+
+  max-height: 160px;                /* prevents sidebar overflow */
+  overflow-y: auto;                 /* enables internal scroll */
+  scrollbar-width: thin;            /* cleaner scrollbar (Firefox) */
 }
+
 .sb-section-label {
   font-family: var(--ff-title);
   font-size: 12px;
@@ -272,9 +544,8 @@ body {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--blue-mid);
-  margin-bottom: 8px;
+  margin-bottom: 6px;               /* slightly reduced from 8px for compactness */
 }
-
 /* type filters */
 #type-filters { display: flex; flex-direction: column; gap: 4px; }
 
@@ -819,15 +1090,19 @@ body {
 </style>
 </head>
 <body>
-
+<nav>
+  <a href="index.html" class="nav-logo"><img src="img/logo-dm2i.svg" alt="DM2i"/></a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="cartographie.html">Cartographie</a></li>
+    <li><a href="dataviz-acteurs.html">Acteurs</a></li>
+    <li><a href="dataviz-cibles-valeurs.html">Cibles</a></li>
+    <li><a href="dataviz-financeurs.html">Financeurs</a></li>
+    <li><a href="dataviz-outils.html">Outils</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
 <!-- ══ TOPBAR ══ -->
 <div id="topbar">
-  <div class="brand">
-    <span class="brand-title">IA &amp; <em>Musique</em></span>
-    <span class="brand-sub">Cartographie &nbsp;&middot;&nbsp; <a href="index.html" style="color:var(--neon);text-decoration:none;font-size:.8em;letter-spacing:.1em;opacity:.8" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.8'">&#8592; Accueil</a></span>
-  </div>
-  <div class="sep"></div>
-
   <div class="search-wrap">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     <input id="search" type="text" placeholder="Rechercher…">
@@ -858,14 +1133,9 @@ body {
 
   <!-- SIDEBAR -->
   <div id="sidebar">
-    <div class="sb-head">
-      <div class="sb-head-label">DM2i &mdash; Cartographie relationnelle</div>
-      <div class="sb-head-title">Entités &amp; Relations</div>
-    </div>
 
-    <div style="padding:10px 14px;background:var(--blue-vif);flex-shrink:0;">
-      <div style="font-family:var(--ff-serif);font-size:11.5px;font-style:italic;color:#fff;line-height:1.5;">&#128161; Cliquez sur un n&#339;ud pour afficher sa fiche compl&#232;te.</div>
-    </div>
+
+
 
     <div class="sb-section">
       <div class="sb-section-label">Types d'entités</div>
@@ -880,11 +1150,14 @@ body {
     <div id="info-panel">
       <div id="info-empty">
 
-        <div class="ie-kicker">Contexte de recherche</div>
+        <div class="sb-section-label">Contexte de recherche</div>
 
-        <p class="ie-question">&#171;&nbsp;Et si &#234;tre ind&#233;pendant dans la musique ne voulait plus dire la m&#234;me chose&nbsp;?&nbsp;&#187;</p>
-
+        <!--<p class="ie-question">&#171;&nbsp;Et si &#234;tre ind&#233;pendant dans la musique ne voulait plus dire la m&#234;me chose&nbsp;?&nbsp;&#187;</p>-->
+        
+        <p style="font-family: var(--ff-title); font-size: 14px; font-weight: 700; color: rgba(49, 50, 51, 0.75); line-height: 1.4;">&#171;&nbsp;Et si &#234;tre ind&#233;pendant dans la musique ne voulait plus dire la m&#234;me chose&nbsp;?&nbsp;&#187;</p>
+        <p style="font-family: var(--ff-title); font-size: 11px; font-weight: 600; color: rgba(86, 86, 86, 0.75); line-height: 1.4; padding: 5px 0 10px;">*Cliquez sur un nœud pour en savoir plus.</p>
         <div class="ie-stats">
+          
           <div class="ie-stat ie-stat-blue">
             <div class="ie-stat-num">0,004&nbsp;&#8364;</div>
             <div class="ie-stat-lbl">par &#233;coute Spotify</div>
@@ -994,6 +1267,7 @@ body {
   <div id="tt-body"></div>
 </div>
 
+
 <script>
 /* ══════════════════════════════════════════════
    DATA
@@ -1012,7 +1286,12 @@ const TYPE_CFG = {
   ag:        { name: "Agrégateur",     color: "#6B4E8A" },
   stream:    { name: "Streaming",      color: "#1a7abf" },
 };
+const burger = document.getElementById('hamburger');
+const nav = document.getElementById('nav-links');
 
+burger.addEventListener('click', () => {
+  nav.classList.toggle('open');
+});
 const EDGE_CFG = {
   financeur:           { label:"Finance",      color:"#965A74", mk:"mk-financeur", dash:null,    w:1.3 },
   fournisseur:         { label:"Fournit",      color:"#3F73EB", mk:"mk-fournit",   dash:"5,3",   w:1   },
@@ -1515,5 +1794,6 @@ window.addEventListener('resize', () => {
   }
 });
 </script>
+
 </body>
 </html>

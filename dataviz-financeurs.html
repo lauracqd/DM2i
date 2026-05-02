@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dataviz 4 — Qui finance l'IA musicale ?</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-deep:  #254396;
+    --blue-mid:   #3B5AA5;
+    --blue-light: #3F73EB;
+    --cream:      #F8F8F8;
+    --rose:       #965A74;
+    --charcoal:   #2B2F32;
+    --border:     rgba(37,67,150,.12);
+    --card:       #fff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body  *{margin:0;padding:0;box-sizing:border-box;}
+  .main{ background:var(--cream); color:var(--charcoal); font-family:'Noto Serif',serif; padding:48px 52px 64px; min-height:100vh; }
+/* ─── NAVBAR ─── */
+  .header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px; gap:24px; }
+  .eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--rose); margin-bottom:10px; }
+  h1 { font-family:'Barlow Condensed',sans-serif; font-size:clamp(42px,5.5vw,68px); font-weight:900; line-height:.9; letter-spacing:1px; color:var(--charcoal); text-transform:uppercase; margin-bottom:12px; }
+  h1 em { color:var(--rose); font-style:normal; }
+  .divider { width:56px; height:4px; background:linear-gradient(90deg,var(--rose),var(--blue-light)); margin:0 0 16px; }
+  .subtitle { font-size:13.5px; color:#555; max-width:620px; line-height:1.75; }
+  .header-badge { background:var(--rose); color:#fff; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:12px; letter-spacing:2px; text-transform:uppercase; padding:8px 18px; border-radius:4px; white-space:nowrap; flex-shrink:0; align-self:flex-start; margin-top:6px; }
+
+  .intro-box { background:var(--card); border-left:4px solid var(--rose); border-radius:0 10px 10px 0; padding:18px 22px; margin-bottom:24px; font-size:13.5px; color:#555; line-height:1.75; box-shadow:0 2px 12px rgba(37,67,150,.04); }
+  .intro-box strong { color:var(--charcoal); }
+
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:16px; }
+
+  .panel { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:28px 30px; position:relative; box-shadow:0 2px 20px rgba(37,67,150,.05); }
+  .panel::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; border-radius:12px 12px 0 0; }
+  .panel.blue::before  { background:linear-gradient(90deg,var(--blue-light),transparent); }
+  .panel.rose::before  { background:linear-gradient(90deg,var(--rose),transparent); }
+  .panel.deep::before  { background:linear-gradient(90deg,var(--blue-deep),transparent); }
+  .panel.mid::before   { background:linear-gradient(90deg,var(--blue-mid),transparent); }
+  .panel-label { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:#bbb; margin-bottom:6px; }
+  .panel-title { font-family:'Barlow Condensed',sans-serif; font-size:18px; font-weight:800; text-transform:uppercase; margin-bottom:4px; color:var(--blue-deep); }
+  .panel-explain { font-size:12.5px; color:#666; line-height:1.65; margin-bottom:18px; background:rgba(63,115,235,.04); border-radius:6px; padding:10px 14px; border:1px solid rgba(63,115,235,.1); }
+
+  .geo { margin-bottom:12px; }
+  .geo-hd { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
+  .geo-name { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; color:var(--charcoal); }
+  .geo-n { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:900; }
+  .geo-track { height:7px; background:rgba(37,67,150,.08); border-radius:4px; overflow:hidden; }
+  .geo-fill { height:100%; border-radius:4px; transition:width 1.2s cubic-bezier(.16,1,.3,1); }
+
+  .type-card { background:var(--cream); border-radius:8px; padding:14px 16px; border-left:4px solid; margin-bottom:10px; cursor:default; }
+  .type-name { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:800; text-transform:uppercase; letter-spacing:.5px; margin-bottom:3px; }
+  .type-n { font-family:'Barlow Condensed',sans-serif; font-size:28px; font-weight:900; line-height:1; }
+  .type-pct { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; color:#bbb; margin-left:6px; }
+  .type-desc { font-size:11.5px; color:#888; line-height:1.5; margin-top:4px; }
+
+  .ins { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:22px 20px; border-left:4px solid var(--blue-light); box-shadow:0 2px 12px rgba(37,67,150,.04); }
+  .ins:nth-child(2) { border-left-color:var(--rose); }
+  .ins:nth-child(3) { border-left-color:var(--blue-deep); }
+  .ins-num { font-family:'Barlow Condensed',sans-serif; font-size:54px; font-weight:900; line-height:1; color:var(--blue-light); margin-bottom:4px; }
+  .ins:nth-child(2) .ins-num { color:var(--rose); }
+  .ins:nth-child(3) .ins-num { color:var(--blue-deep); }
+  .ins-label { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:#bbb; margin-bottom:6px; }
+  .ins-desc { font-size:12.5px; color:#666; line-height:1.6; }
+  .ins-desc strong { color:var(--charcoal); }
+
+  /* Donut SVG */
+  svg { display:block; overflow:visible; }
+
+  .section-hd { margin:28px 0 10px; }
+  .section-num { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#bbb; margin-bottom:4px; }
+  .section-title { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:900; color:var(--charcoal); text-transform:uppercase; margin-bottom:6px; }
+  .section-explain { font-size:13px; color:#666; line-height:1.7; max-width:780px; margin-bottom:14px; }
+
+  .source-block { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:14px 18px; margin-top:16px; display:flex; align-items:flex-start; gap:12px; }
+  .source-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
+  .source-text { font-size:11.5px; color:#888; line-height:1.6; font-style:italic; }
+  .source-text strong { font-style:normal; color:#666; font-weight:700; font-family:'Barlow Condensed',sans-serif; letter-spacing:.5px; font-size:12px; }
+
+  .synth-box { background:rgba(37,67,150,.04); border:1px solid rgba(37,67,150,.1); border-radius:8px; padding:14px 16px; font-size:13px; color:#555; line-height:1.7; margin-top:16px; }
+
+  .sep { height:1px; background:var(--border); margin:16px 0; }
+
+  .tooltip { position:fixed; background:var(--charcoal); border-radius:8px; padding:12px 16px; pointer-events:none; z-index:200; opacity:0; transition:opacity .15s; min-width:220px; max-width:320px; box-shadow:0 8px 32px rgba(0,0,0,.2); }
+  .tt-title { font-family:'Barlow Condensed',sans-serif; font-size:18px; font-weight:800; color:#fff; margin-bottom:6px; letter-spacing:1px; }
+  .tt-text { font-size:12px; color:#bbb; line-height:1.6; }
+
+  /* ─── NAVBAR ─── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--blue, #254396);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+  height: 54px;
+  border-bottom: 2px solid var(--blue-mid, #3B5AA5);
+}
+
+/* LOGO */
+.nav-logo {
+  display: flex;
+  align-items: center;
+}
+.nav-logo img {
+  height: 28px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+/* LINKS */
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: #fff;
+}
+
+/* HAMBURGER */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 22px;
+  height: 2px;
+  background: #fff;
+  display: block;
+}
+
+@media (max-width: 768px) {
+
+  .nav-links {
+    position: absolute;
+    top: 54px;
+    left: 0;
+    width: 100%;
+    background: var(--blue, #254396);
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 1.5rem 2rem;
+    display: none;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--dark, #2B2F32);
+  color: rgba(255,255,255,0.7);
+  padding: 3.5rem 2.5rem 2rem;
+  margin-top: 4rem;
+}
+
+/* MAIN GRID */
+.footer-main {
+  max-width: 1100px;
+  margin: 0 auto 2rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 2.5rem;
+}
+
+/* BRAND BLOCK */
+.footer-brand {
+  max-width: 420px;
+}
+
+.footer-logo img {
+  height: 36px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  margin-bottom: 1rem;
+}
+
+.footer-tagline {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+  color: rgba(255,255,255,0.6);
+}
+
+/* CONTACT */
+.footer-contact {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.footer-contact:hover {
+  border-color: #fff;
+}
+
+/* COLUMNS */
+.footer-col h4 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.footer-col ul {
+  list-style: none;
+}
+
+.footer-col li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-col a {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-col a:hover {
+  color: #fff;
+}
+
+/* ─── BOTTOM BAR ─── */
+.footer-bottom {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* COPYRIGHT */
+.footer-copy {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+}
+
+/* CREDITS */
+.footer-credits {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.footer-credits a {
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+}
+
+.footer-credits a:hover {
+  color: #fff;
+}
+
+.footer-credits-label {
+  opacity: 0.6;
+}
+
+.footer-credits-sep {
+  opacity: 0.3;
+}
+
+.footer-credits-dot {
+  opacity: 0.3;
+}
+
+/* BACK TO TOP */
+.back-to-top {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.6);
+
+  padding: 0.4rem 0.8rem;
+  border-radius: 2px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  transition: all 0.2s ease;
+}
+
+.back-to-top:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+.back-to-top .arr {
+  font-size: 0.9rem;
+}
+
+
+@media (max-width: 900px) {
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+</style>
+</head>
+<nav>
+  <a href="index.html" class="nav-logo"><img src="img/logo-dm2i.svg" alt="DM2i"/></a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="cartographie.html">Cartographie</a></li>
+    <li><a href="dataviz-acteurs.html">Acteurs</a></li>
+    <li><a href="dataviz-cibles-valeurs.html">Cibles</a></li>
+    <li><a href="dataviz-financeurs.html">Financeurs</a></li>
+    <li><a href="dataviz-outils.html">Outils</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+<body>
+
+  <div class="main">
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <div class="eyebrow">DM2i · Programme de recherche · Visualisation 4 sur 4</div>
+    <h1>QUI FINANCE<br><em>L'IA MUSICALE</em> ?</h1>
+    <div class="divider"></div>
+    <p class="subtitle">Profil des 53 investisseurs actifs dans l'écosystème IA musical : type de financement (<em>investype</em>) et géographie du capital (<em>siege</em>) — corpus DM2i, 2025.</p>
+  </div>
+  <div class="header-badge">53 investisseurs</div>
+</div>
+
+<div class="intro-box">
+  <strong>Comment lire cette visualisation ?</strong> Le corpus DM2i recense <strong>53 investisseurs</strong> ayant financé des outils ou acteurs de l'IA musicale. Le champ <strong>investype</strong> classe chaque financeur par catégorie (Venture Capital, Business Angel, fonds public, etc.). Le champ <strong>siege</strong> révèle leur localisation géographique et confirme une concentration écrasante aux États-Unis, qui concentrent 70% des investisseurs recensés.
+</div>
+
+<!-- KPI -->
+<div class="grid3">
+  <div class="ins">
+    <div class="ins-label">Type dominant</div>
+    <div class="ins-num">35</div>
+    <div class="ins-desc"><strong>Venture Capital</strong> sur 53 investisseurs — soit 66% du total. La logique startup-VC domine l'écosystème de financement de l'IA musicale</div>
+  </div>
+  <div class="ins">
+    <div class="ins-label">Concentration US</div>
+    <div class="ins-num">70%</div>
+    <div class="ins-desc"><strong>37 investisseurs sur 53</strong> ont leur siège aux États-Unis contre seulement 3 en France, 4 au Royaume-Uni, 2 au Japon</div>
+  </div>
+  <div class="ins">
+    <div class="ins-label">Diversité géographique</div>
+    <div class="ins-num">10</div>
+    <div class="ins-desc">pays différents représentés parmi les 53 financeurs mais <strong>9 pays se partagent seulement 16 investisseurs</strong>, pendant que les États-Unis en concentrent 37</div>
+  </div>
+</div>
+
+<!-- SECTION 1 : TYPES -->
+<div class="section-hd">
+  <div class="section-title">Qui sont les financeurs ?</div>
+  <div class="section-explain">Les 53 investisseurs classés par type. Le champ <code>investype</code> distingue 7 catégories : de la startup à traction rapide financée par VC jusqu'au fonds public.</div>
+</div>
+
+<div class="grid2">
+  <div class="panel blue">
+    <div class="panel-label">7 types · champ investype</div>
+    <div class="panel-title">Types d'investisseurs</div>
+    <div class="panel-explain">Répartition des 53 financeurs par nature. Survolez chaque carte pour en savoir plus.</div>
+    <div id="type-cards"></div>
+  </div>
+
+  <div class="panel rose">
+    <div class="panel-label">Répartition visuelle · proportions</div>
+    <div class="panel-title">Structure du capital</div>
+    <div class="panel-explain">Chaque part représente la proportion d'un type de financement parmi les 53 investisseurs recensés.</div>
+    <div style="display:flex;justify-content:center;margin-bottom:20px">
+      <svg id="donut-svg" width="280" height="280" viewBox="0 0 280 280"></svg>
+    </div>
+    <div id="donut-legend"></div>
+    <p style="font-size:11px;color:#bbb;margin-top:16px;line-height:1.6;font-style:italic">Le diagramme affiche 63 occurrences et non 53, car certains investisseurs cumulent plusieurs types dans le corpus. Par exemple, un fonds peut être classé à la fois comme <em>Venture Capital</em> et <em>Strategic Investor</em> — il est alors compté une fois dans chaque catégorie.</p>
+  </div>
+</div>
+
+<!-- SECTION 2 : GEOGRAPHIE -->
+<div class="section-hd">
+  <div class="section-title">D'où vient le capital ?</div>
+  <div class="section-explain">Répartition géographique des 53 investisseurs selon le champ <code>siege</code> — pays du siège social.</div>
+</div>
+
+<div class="grid2">
+  <div class="panel deep">
+    <div class="panel-label">10 pays · champ siege</div>
+    <div class="panel-title">Géographie des investisseurs</div>
+    <div class="panel-explain">Nombre d'investisseurs par pays. La barre est proportionnelle au maximum (37, États-Unis).</div>
+    <div id="geo-bars"></div>
+  </div>
+
+  <div class="panel mid">
+    <div class="panel-label">Synthèse · Concentration du capital</div>
+    <div class="panel-title">Une domination sans partage</div>
+    <div class="panel-explain">Le capital qui finance l'IA musicale est géographiquement très concentré — avec des implications directes pour la souveraineté culturelle.</div>
+
+    <div id="conc-bars"></div>
+
+    <div class="sep"></div>
+
+    <div class="synth-box">
+      <strong>70% des investisseurs sont américains.</strong> Cette concentration signifie que les décisions sur quels outils IA musicaux se développent, pour quels usages et selon quelles valeurs, sont prises majoritairement depuis les États-Unis, une réalité qui interroge l'autonomie des artistes indépendants européens face à ces outils.
+    </div>
+  </div>
+</div>
+
+<div class="source-block">
+  <span class="source-icon">📁</span>
+  <div class="source-text">
+    <strong>Source :</strong> data_financeur_clean.json, corpus DM2i — IUT Bordeaux Montaigne, 2025 (53 investisseurs).
+    Champs exploités : <em>metadata.investype</em> (type de financeur) · <em>metadata.siege</em> (pays, extrait de la dernière composante du champ).
+  </div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+</div>
+<footer>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <a href="index.html" class="footer-logo"><img src="img/logo-dm2i.svg" alt="DM2i"/></a>
+      <p class="footer-tagline">Un programme de recherche sur les données musicales, l'IA et les nouvelles formes d'indépendance dans la filière musicale française.</p>
+      <a href="mailto:contact@dm2i.fr" class="footer-contact">Nous contacter</a>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="index.html#about">Le projet</a></li>
+        <li><a href="index.html#explorer">Découvertes</a></li>
+        <li><a href="index.html#axes">Nos angles</a></li>
+        <li><a href="index.html#chaine">La filière</a></li>
+        <li><a href="index.html#partners">Partenaires</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Résultats</h4>
+      <ul>
+        <li><a href="cartographie.html">Cartographie interactive</a></li>
+        <li><a href="dataviz-outils.html">Outils &amp; création</a></li>
+        <li><a href="dataviz-acteurs.html">Pouvoir &amp; plateformes</a></li>
+        <li><a href="dataviz-cibles-valeurs.html">Usages &amp; publics</a></li>
+        <li><a href="dataviz-financeurs.html">Investissements</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 DM2i — Données Musicales, IA &amp; (In)dépendance</span>
+    <div class="footer-credits">
+      <span class="footer-credits-label">Site réalisé par</span>
+      <span class="footer-credits-sep">—</span>
+      <a href="https://www.linkedin.com/in/priscilla-natalia" target="_blank" rel="noopener">Priscilla Natalia</a>
+      <span class="footer-credits-dot">•</span>
+      <a href="https://www.linkedin.com/in/laura-cocq-duche" target="_blank" rel="noopener">Laura Cocq–Duché</a>
+      <span class="footer-credits-dot">•</span>
+      <a href="https://www.linkedin.com/in/marine-louis" target="_blank" rel="noopener">Marine Louis</a>
+      <span class="footer-credits-dot">•</span>
+      <a href="https://www.linkedin.com/in/fanta-kouyate" target="_blank" rel="noopener">Fanta Kouyaté</a>
+    </div>
+    <button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+      <span class="arr">↑</span> Haut de page
+    </button>
+  </div>
+</footer>
+<script>
+const tt = document.getElementById('tooltip');
+function showTip(e, title, text) { tt.innerHTML = `<div class="tt-title">${title}</div><div class="tt-text">${text}</div>`; tt.style.opacity = '1'; moveTip(e); }
+function moveTip(e) { tt.style.left = (e.clientX + 16) + 'px'; tt.style.top = (e.clientY - 10) + 'px'; }
+function hideTip() { tt.style.opacity = '0'; }
+
+const burger = document.getElementById('hamburger');
+const nav = document.getElementById('nav-links');
+
+burger.addEventListener('click', () => {
+  nav.classList.toggle('open');
+});
+
+// ── DATA — strictly from data_financeur_clean.json ────────────────────────────
+// Fields used: metadata.investype, metadata.siege
+
+const typeData = [
+  {
+    type: 'Venture Capital',
+    n: 35, pct: 66,
+    color: '#3F73EB',
+    desc: 'Fonds d\'investissement spécialisés dans les startups à forte croissance. Modèle dominant dans l\'IA musicale.',
+    examples: 'Sequoia Capital, Andreessen Horowitz, General Catalyst…'
+  },
+  {
+    type: 'Business Angel',
+    n: 7, pct: 13,
+    color: '#965A74',
+    desc: 'Investisseurs individuels qui apportent capital et expertise aux premières étapes.',
+    examples: '7 business angels recensés dans le corpus'
+  },
+  {
+    type: 'Strategic Investor',
+    n: 6, pct: 11,
+    color: '#3B5AA5',
+    desc: 'Entreprises qui investissent dans un secteur lié à leur activité principale (ex. Sony Innovation Fund).',
+    examples: 'Sony Innovation Fund, Warner Music, Shure…'
+  },
+  {
+    type: 'Private Equity',
+    n: 6, pct: 11,
+    color: '#254396',
+    desc: 'Fonds qui investissent dans des entreprises plus matures, souvent pour des rachats ou restructurations.',
+    examples: 'Insight Partners, Silversmith Capital…'
+  },
+  {
+    type: 'Accelerator',
+    n: 3, pct: 6,
+    color: '#A06B85',
+    desc: 'Programmes d\'accompagnement qui financent et encadrent les startups en phase de démarrage.',
+    examples: '3 accélérateurs recensés dans le corpus'
+  },
+  {
+    type: 'Public Fund',
+    n: 3, pct: 6,
+    color: '#7B4F65',
+    desc: 'Fonds publics ou para-publics (ex. Invest Quebec, fonds européens).',
+    examples: 'Invest Quebec + 2 autres fonds publics'
+  },
+  {
+    type: 'Corporate VC',
+    n: 3, pct: 6,
+    color: '#6B8FD4',
+    desc: 'Branche d\'investissement d\'une grande entreprise (ex. NVentures de NVIDIA).',
+    examples: 'NVentures (NVIDIA) + 2 autres Corporate VC'
+  },
+];
+
+// Type cards — use index to avoid quote issues in HTML attributes
+const tcEl = document.getElementById('type-cards');
+typeData.forEach((d, i) => {
+  tcEl.innerHTML += `<div class="type-card" style="border-left-color:${d.color}"
+    onmouseenter="showTypeCard(event,${i})"
+    onmousemove="moveTip(event)" onmouseleave="hideTip()">
+    <div class="type-name" style="color:${d.color}">${d.type}</div>
+    <div>
+      <span class="type-n" style="color:${d.color}">${d.n}</span>
+      <span class="type-pct">${d.pct}%</span>
+    </div>
+    <div class="type-desc">${d.desc}</div>
+  </div>`;
+});
+
+function showTypeCard(e, i) {
+  const d = typeData[i];
+  showTip(e, d.type, d.desc + '<br><br><em>' + d.examples + '</em>');
+}
+
+// Donut chart
+const donut = document.getElementById('donut-svg');
+const cx = 140, cy = 140, R = 122, r = 82;
+let angle = -Math.PI / 2;
+const total = typeData.reduce((s, d) => s + d.n, 0);
+let dHtml = '';
+typeData.forEach(d => {
+  const frac = d.n / total;
+  const sweep = frac * 2 * Math.PI;
+  const end = angle + sweep;
+  const x1 = cx + R * Math.cos(angle), y1 = cy + R * Math.sin(angle);
+  const x2 = cx + R * Math.cos(end),   y2 = cy + R * Math.sin(end);
+  const ix1 = cx + r * Math.cos(end),  iy1 = cy + r * Math.sin(end);
+  const ix2 = cx + r * Math.cos(angle),iy2 = cy + r * Math.sin(angle);
+  const large = sweep > Math.PI ? 1 : 0;
+  dHtml += `<path d="M ${x1} ${y1} A ${R} ${R} 0 ${large} 1 ${x2} ${y2} L ${ix1} ${iy1} A ${r} ${r} 0 ${large} 0 ${ix2} ${iy2} Z"
+    fill="${d.color}" fill-opacity="0.88" style="cursor:pointer"
+    onmouseenter="showTip(event,'${d.type}','${d.n} investisseurs — ${d.pct}%')"
+    onmousemove="moveTip(event)" onmouseleave="hideTip()"/>`;
+  angle = end;
+});
+dHtml += `<text x="${cx}" y="${cy - 20}" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-size="42" font-weight="900" fill="#2B2F32">63</text>`;
+dHtml += `<text x="${cx}" y="${cy + 10}" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-size="12" font-weight="700" fill="#bbb" letter-spacing="1">OCCURRENCES</text>`;
+dHtml += `<text x="${cx}" y="${cy + 28}" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-size="11" font-weight="600" fill="#ccc">(53 investisseurs)</text>`;
+donut.innerHTML = dHtml;
+
+// Donut legend — two columns below
+const dlEl = document.getElementById('donut-legend');
+dlEl.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:8px 20px';
+typeData.forEach(d => {
+  dlEl.innerHTML += `<div style="display:flex;align-items:center;gap:8px">
+    <div style="width:10px;height:10px;border-radius:2px;background:${d.color};flex-shrink:0"></div>
+    <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:#555;flex:1">${d.type}</span>
+    <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:900;color:${d.color}">${d.n}</span>
+  </div>`;
+});
+
+// Geo bars — from siege field (last part after comma)
+const geoData = [
+  { country:'🇺🇸 États-Unis',  n:37, color:'#3F73EB' },
+  { country:'🇬🇧 Royaume-Uni', n:4,  color:'#3B5AA5' },
+  { country:'🇫🇷 France',      n:3,  color:'#965A74' },
+  { country:'🇯🇵 Japon',       n:2,  color:'#254396' },
+  { country:'🇨🇦 Canada',      n:2,  color:'#A06B85' },
+  { country:'🇩🇪 Allemagne',   n:1,  color:'#6B8FD4' },
+  { country:'🇨🇳 Chine',       n:1,  color:'#7B4F65' },
+  { country:'🇧🇪 Belgique',    n:1,  color:'#bbb' },
+  { country:'🇮🇱 Israël',      n:1,  color:'#bbb' },
+  { country:'🇧🇷 Brésil',      n:1,  color:'#bbb' },
+];
+
+const geoEl = document.getElementById('geo-bars');
+geoData.forEach(d => {
+  const w = ((d.n / 37) * 100).toFixed(0);
+  geoEl.innerHTML += `<div class="geo"
+    onmouseenter="showTip(event,'${d.country}','${d.n} investisseur${d.n > 1 ? 's' : ''} — ${((d.n/53)*100).toFixed(0)}% du total<br><em>champ siege — data_financeur_clean.json</em>')"
+    onmousemove="moveTip(event)" onmouseleave="hideTip()">
+    <div class="geo-hd">
+      <span class="geo-name">${d.country}</span>
+      <span class="geo-n" style="color:${d.color}">${d.n}</span>
+    </div>
+    <div class="geo-track"><div class="geo-fill" style="width:0%;background:${d.color}" data-w="${w}%"></div></div>
+  </div>`;
+});
+
+// Concentration synthesis bars
+const concData = [
+  { label:'États-Unis', pct:70, sub:'37 / 53 investisseurs', color:'#3F73EB' },
+  { label:'Venture Capital', pct:66, sub:'35 / 53 investisseurs', color:'#254396' },
+  { label:'Europe (UK + FR + DE + BE)', pct:17, sub:'9 / 53 investisseurs', color:'#965A74' },
+  { label:'Fonds publics', pct:6, sub:'3 / 53 investisseurs', color:'#A06B85' },
+];
+const concEl = document.getElementById('conc-bars');
+concData.forEach(d => {
+  concEl.innerHTML += `<div style="margin-bottom:14px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px">
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:${d.color}">${d.label}</span>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:${d.color}">${d.pct}%</span>
+    </div>
+    <div style="font-size:11px;color:#bbb;margin-bottom:5px">${d.sub}</div>
+    <div style="height:6px;background:rgba(37,67,150,.08);border-radius:4px;overflow:hidden">
+      <div style="height:100%;background:${d.color};border-radius:4px;width:0%;transition:width 1.2s cubic-bezier(.16,1,.3,1)" class="conc-fill" data-w="${d.pct}%"></div>
+    </div>
+  </div>`;
+});
+
+setTimeout(() => {
+  document.querySelectorAll('.geo-fill, .conc-fill').forEach(el => el.style.width = el.getAttribute('data-w'));
+}, 200);
+</script>
+</body>
+</html>

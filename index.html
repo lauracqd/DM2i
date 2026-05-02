@@ -195,7 +195,7 @@ h2 em { font-style: normal; color: var(--blue-light); }
 .go-link::after { content: '→'; }
 .dv-label { font-family: var(--font-title); font-size: .72rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--plum); display: flex; align-items: center; gap: .5rem; margin-bottom: 1.2rem; }
 .dv-label::before { content: ''; flex: none; width: 16px; height: 2px; background: var(--plum); }
-.datavis-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.4rem; }
+.datavis-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.4rem; }
 .dv-card { background: var(--white); border-radius: 2px; overflow: hidden; border: 1px solid rgba(0,0,0,.06); transition: transform .2s, box-shadow .2s; }
 .dv-card:hover { transform: translateY(-5px); box-shadow: 0 12px 36px rgba(0,0,0,.1); }
 .dv-img { height: 150px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
@@ -318,7 +318,7 @@ footer { background: var(--dark); color: rgba(255,255,255,.45); padding: 0; }
 <body>
 
 <nav>
-  <div class="nav-logo"><img src="logo-dm2i.svg" alt="DM2i"/></div>
+  <div class="nav-logo"><img src="img/logo-dm2i.svg" alt="DM2i"/></div>
   <ul class="nav-links" id="nav-links">
     <li><a href="#about">Le projet</a></li>
     <li><a href="#explorer">Découvertes</a></li>
@@ -334,7 +334,7 @@ footer { background: var(--dark); color: rgba(255,255,255,.45); padding: 0; }
   <div class="hero-overlay"></div>
   <div class="hero-inner">
     <div class="hero-eyebrow"><span></span>Programme de recherche — France</div>
-    <div class="hero-logo-wrap"><img src="logo-dm2i.svg" alt="DM2i"/></div>
+    <div class="hero-logo-wrap"><img src="img/logo-dm2i.svg" alt="DM2i"/></div>
     <p class="hero-subtitle">Données Musicales, <em>IA</em><br>&amp; (In)dépendance</p>
     <p class="hero-desc">Et si « être indépendant » dans la musique ne voulait plus dire la même chose ? Spotify, Apple Music, algorithmes, IA générative… DM2i ouvre la boîte noire.</p>
     <div class="hero-ctas">
@@ -396,7 +396,12 @@ footer { background: var(--dark); color: rgba(255,255,255,.45); padding: 0; }
     <h2>Ce que la recherche <em>révèle</em></h2>
     <a href="cartographie.html" style="display:block;">
       <div class="carto-card">
-        <div class="carto-img"><span class="img-ph">↳ Aperçu de la carte</span></div>
+        <div class="carto-img">
+<div class="carto-bg" style="width:500px; height:350px; overflow:hidden;">
+  <img src="img/cartographie-1.jpg"
+       style="width:100%; height:100%; object-fit:cover;">
+</div>
+        </div>
         <div class="carto-body">
           <span class="tag">Cartographie interactive</span>
           <h3>Qui fait vraiment tourner la musique indépendante ?</h3>
@@ -406,44 +411,83 @@ footer { background: var(--dark); color: rgba(255,255,255,.45); padding: 0; }
       </div>
     </a>
     <div class="dv-label">Visualisations de données</div>
+    <!--dataviz commence ici-->
     <div class="datavis-grid">
-      <div class="dv-card">
-        <a href="datavis-asymetries.html">
-          <div class="dv-img"><span class="dv-img-ph">↳ Aperçu</span></div>
-          <div class="dv-accent-bar"></div>
-          <div class="dv-body">
-            <span class="dv-kicker">Données &amp; inégalités</span>
-            <h3>Majors vs. indépendants : qui sait quoi ?</h3>
-            <p>Les majors ont accès à des données que les indépendants ne verront jamais. Visualisation comparative des asymétries d'information dans la filière.</p>
-            <span class="dv-link">Voir la visualisation</span>
-          </div>
-        </a>
+
+    <!-- DATAVIZ 1 — outils -->
+    <div class="dv-card">
+    <a href="dataviz-outils.html">
+      <div class="dv-img">
+        <div class="dv-bg">
+          <img src="img/dataviz-1.jpg" alt="" style="width:100%;height:100%;object-fit:cover;">
+        </div>
       </div>
-      <div class="dv-card">
-        <a href="datavis-cgu.html">
-          <div class="dv-img"><span class="dv-img-ph">↳ Aperçu</span></div>
-          <div class="dv-accent-bar"></div>
-          <div class="dv-body">
-            <span class="dv-kicker">Conditions des plateformes</span>
-            <h3>Ce que vous signez sans le lire</h3>
-            <p>Spotify, Apple Music, Deezer, Bandcamp… Analyse visuelle de ce que les conditions générales imposent vraiment aux artistes et labels indépendants.</p>
-            <span class="dv-link">Voir la visualisation</span>
-          </div>
-        </a>
+      <div class="dv-accent-bar"></div>
+      <div class="dv-body">
+        <span class="dv-kicker">Outils &amp; création</span>
+        <h3>L’explosion des outils IA musicaux</h3>
+        <p>Une croissance rapide des outils de création, production et mastering automatisé qui transforme en profondeur les pratiques musicales.</p>
+        <span class="dv-link">Voir la visualisation</span>
       </div>
-      <div class="dv-card">
-        <a href="datavis-ia.html">
-          <div class="dv-img"><span class="dv-img-ph">↳ Aperçu</span></div>
-          <div class="dv-accent-bar"></div>
-          <div class="dv-body">
-            <span class="dv-kicker">Intelligence artificielle</span>
-            <h3>L'IA dans la musique : panorama d'un secteur en ébullition</h3>
-            <p>Composition, mastering automatisé, recommandation, détection de tendances… Cartographie des outils d'IA et de leur place dans la chaîne de valeur.</p>
-            <span class="dv-link">Voir la visualisation</span>
-          </div>
-        </a>
-      </div>
+    </a>
     </div>
+
+    <!-- DATAVIZ 2 — acteurs -->
+    <div class="dv-card">
+    <a href="dataviz-acteurs.html">
+      <div class="dv-img">
+        <div class="dv-bg">
+          <img src="img/dataviz-2.jpg" alt="" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+      </div>
+      <div class="dv-accent-bar"></div>
+      <div class="dv-body">
+        <span class="dv-kicker">Pouvoir &amp; plateformes</span>
+        <h3>Qui contrôle la musique ?</h3>
+        <p>Plateformes, majors et nouveaux acteurs technologiques redéfinissent les rapports de force dans l’industrie musicale.</p>
+        <span class="dv-link">Voir la visualisation</span>
+      </div>
+    </a>
+    </div>
+
+    <!-- DATAVIZ 3 — cibles -->
+    <div class="dv-card">
+    <a href="dataviz-cibles-valeurs.html">
+      <div class="dv-img">
+        <div class="dv-bg">
+          <img src="img/dataviz-3.jpg" alt="" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+      </div>
+      <div class="dv-accent-bar"></div>
+      <div class="dv-body">
+        <span class="dv-kicker">Usages &amp; publics</span>
+        <h3>À qui s’adressent les outils IA ?</h3>
+        <p>Artistes, labels, amateurs : segmentation des cibles et promesses de valeur des outils d’intelligence artificielle musicale.</p>
+        <span class="dv-link">Voir la visualisation</span>
+      </div>
+    </a>
+    </div>
+
+    <!-- DATAVIZ 4 — financeurs -->
+    <div class="dv-card">
+    <a href="dataviz-financeurs.html">
+      <div class="dv-img">
+        <div class="dv-bg">
+          <img src="img/dataviz-4.jpg" alt="" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+      </div>
+      <div class="dv-accent-bar"></div>
+      <div class="dv-body">
+        <span class="dv-kicker">Investissements</span>
+        <h3>Qui finance l’IA musicale ?</h3>
+        <p>Fonds d’investissement, géants tech et capital-risque structurent l’essor des technologies musicales et leurs logiques économiques.</p>
+        <span class="dv-link">Voir la visualisation</span>
+      </div>
+    </a>
+    </div>
+
+    </div>
+    <!--dataviz se termine ici-->
   </div>
 </section>
 
@@ -520,7 +564,7 @@ footer { background: var(--dark); color: rgba(255,255,255,.45); padding: 0; }
 <footer>
   <div class="footer-main">
     <div class="footer-brand">
-      <a href="#" class="footer-logo"><img src="logo-dm2i.svg" alt="DM2i"/></a>
+      <a href="index.html" class="footer-logo"><img src="img/logo-dm2i.svg" alt="DM2i"/></a>
       <p class="footer-tagline">Un programme de recherche sur les données musicales, l'IA et les nouvelles formes d'indépendance dans la filière musicale française.</p>
       <a href="mailto:contact@dm2i.fr" class="footer-contact">Nous contacter</a>
     </div>
@@ -538,9 +582,10 @@ footer { background: var(--dark); color: rgba(255,255,255,.45); padding: 0; }
       <h4>Résultats</h4>
       <ul>
         <li><a href="cartographie.html">Cartographie interactive</a></li>
-        <li><a href="datavis-asymetries.html">Majors vs. indépendants</a></li>
-        <li><a href="datavis-cgu.html">Analyse des CGU</a></li>
-        <li><a href="datavis-ia.html">Panorama IA musicale</a></li>
+        <li><a href="dataviz-outils.html">Outils &amp; création</a></li>
+        <li><a href="dataviz-acteurs.html">Pouvoir &amp; plateformes</a></li>
+        <li><a href="dataviz-cibles-valeurs.html">Usages &amp; publics</a></li>
+        <li><a href="dataviz-financeurs.html">Investissements</a></li>
       </ul>
     </div>
   </div>
